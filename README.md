@@ -14,8 +14,13 @@ Based on [Resize Raccoon](https://github.com/mistenkt/resize-raccoon) by mistenk
 
 ## Added Features
 
-- Drag-and-drop to reorder profiles on the home screen
-- Select profiles from the system tray and apply them
+- Ability to reorder profiles - drag/drop to reorder them
+- Apply profiles from the System Tray menu
+- Apply profiles from hotkeys so you can apply them without touching the app
+- Import existing Resize Raccoon profiles into Resize Rabbit
+- Fully multi-lingual (with AI translations, happy to take submissions from native speakers)
+- Fix: Auto-update wasn't actually working, it is now
+- Fix: Prevent the app from launching more than one instance
 
 ## Installation
 
