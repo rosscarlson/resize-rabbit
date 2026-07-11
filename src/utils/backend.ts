@@ -74,6 +74,8 @@ const profile = {
         invokeWithToast('profile_delete', {
             profile: caseConvert.toSnake(profile),
         }),
+    reorder: async (uuids: string[]) =>
+        invokeWithToast('profile_reorder', { uuids }),
 };
 
 const process = {

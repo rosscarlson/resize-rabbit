@@ -4,6 +4,7 @@ use crate::operations::window_manager::ApplyConfig;
 use crate::profile::{self, Profile};
 use crate::window_manager;
 use tauri::{AppHandle, Runtime};
+use uuid::Uuid;
 
 #[tauri::command]
 pub fn profile_get<R: Runtime>(app_handle: AppHandle<R>) -> Result<Vec<Profile>, ProfileError> {
@@ -44,4 +45,12 @@ pub fn profile_delete<R: Runtime>(
     app_handle: AppHandle<R>,
 ) -> Result<(), ProfileError> {
     profile::delete_profile(profile, &app_handle)
+}
+
+#[tauri::command]
+pub fn profile_reorder<R: Runtime>(
+    uuids: Vec<Uuid>,
+    app_handle: AppHandle<R>,
+) -> Result<(), ProfileError> {
+    profile::reorder_profiles(uuids, &app_handle)
 }

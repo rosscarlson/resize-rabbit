@@ -4,12 +4,26 @@ import { Plus, Settings as SettingsIcon } from 'react-feather';
 import SettingsMenu from '../components/SettingsMenu';
 import { getSettings, updateSettings } from '../state/settingsState';
 import { getAppVersion } from '../state/appVersionState';
-import { getProfiles } from '../state/profileState';
+import { getProfiles, reorderProfiles } from '../state/profileState';
 import { setScreen } from '../state/screenState';
 import { Screen } from '../types/ScreenTypes';
+import {
+    DndContext,
+    closestCenter,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
+} from '@dnd-kit/core';
+import {
+    SortableContext,
+    verticalListSortingStrategy,
+    arrayMove,
+} from '@dnd-kit/sortable';
 
 const HomeScreen = () => {
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const sensors = useSensors(useSensor(PointerSensor));
 
     const handleProcessWatcherToggle = (
         e: React.ChangeEvent<HTMLInputElement>
@@ -19,6 +33,16 @@ const HomeScreen = () => {
 
     const handleNewProfile = () => {
         setScreen(Screen.PROFILE_EDITOR);
+    };
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+        const profiles = getProfiles();
+        const oldIndex = profiles.findIndex(p => p.uuid === active.id);
+        const newIndex = profiles.findIndex(p => p.uuid === over.id);
+        const reordered = arrayMove([...profiles], oldIndex, newIndex);
+        reorderProfiles(reordered.map(p => p.uuid));
     };
 
     return (
@@ -93,9 +117,20 @@ const HomeScreen = () => {
                         </div>
                     </div>
                     <div className="flex flex-col h-full overflow-y-auto pr-8 pt-12 pb-12 w-full">
-                        {getProfiles().map((p, i) => (
-                            <ProfileListItem key={i} profile={p} />
-                        ))}
+                        <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleDragEnd}
+                        >
+                            <SortableContext
+                                items={getProfiles().map(p => p.uuid)}
+                                strategy={verticalListSortingStrategy}
+                            >
+                                {getProfiles().map((p) => (
+                                    <ProfileListItem key={p.uuid} profile={p} />
+                                ))}
+                            </SortableContext>
+                        </DndContext>
                     </div>
                 </div>
                 <button

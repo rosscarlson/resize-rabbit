@@ -129,3 +129,19 @@ pub fn delete_profile<R: Runtime>(
 
     Ok(())
 }
+
+pub fn reorder_profiles<R: Runtime>(
+    uuids: Vec<Uuid>,
+    app: &AppHandle<R>,
+) -> Result<(), ProfileError> {
+    let profiles = load_profiles(app)?;
+    let reordered: Vec<Profile> = uuids
+        .iter()
+        .filter_map(|id| profiles.iter().find(|p| &p.uuid == id).cloned())
+        .collect();
+
+    save_profiles_to_disk(&reordered, app)?;
+    update_profiles_state(reordered, app);
+
+    Ok(())
+}

@@ -27,4 +27,12 @@ export const updateProfile = (updatedProfile: Partial<Profile>) => {
     });
 }
 
+export const reorderProfiles = (orderedUuids: string[]) => {
+    const reordered = orderedUuids
+        .map(id => state.value.find(p => p.uuid === id))
+        .filter((p): p is Profile => p !== undefined);
+    setProfiles(reordered);
+    backend.profile.reorder(orderedUuids).catch(console.error);
+}
+
 backend.profile.all().then(setProfiles).catch(console.error);

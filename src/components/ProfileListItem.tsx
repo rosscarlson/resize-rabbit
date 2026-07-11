@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 import { Profile } from '../types/ProfileTypes';
-import { Maximize, Settings } from 'react-feather';
+import { Maximize, Settings, Menu } from 'react-feather';
 import { useState } from 'react';
 import backend from '../utils/backend';
 import { setScreen } from '../state/screenState';
 import { Screen } from '../types/ScreenTypes';
 import { useTranslation } from '../utils/i18n/useTranslation';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface Props {
     profile: Profile;
@@ -14,6 +16,14 @@ interface Props {
 const ProfileListItem = ({ profile }: Props) => {
     const t = useTranslation();
     const [loading, setLoading] = useState(false);
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+        useSortable({ id: profile.uuid });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.4 : 1,
+    };
 
     const handleResize = () => {
         setLoading(true);
@@ -25,9 +35,20 @@ const ProfileListItem = ({ profile }: Props) => {
     };
 
     return (
-        <Component className="card card-compact shadow-xl bg-base-100 mb-2">
+        <Component
+            ref={setNodeRef}
+            style={style}
+            className="card card-compact shadow-xl bg-base-100 mb-2"
+        >
             <div className="card-body gap-y-0">
                 <div className="row">
+                    <button
+                        className="drag-handle btn btn-ghost btn-square btn-sm mr-1 cursor-grab active:cursor-grabbing"
+                        {...attributes}
+                        {...listeners}
+                    >
+                        <Menu size={16} />
+                    </button>
                     <div className="label text-lg p-0">{profile.name}</div>
                     <div className="actions gap-1">
                         <button
