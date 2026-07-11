@@ -29,6 +29,7 @@ pub fn build_tray_menu(profiles: &[Profile]) -> SystemTrayMenu {
     }
 
     menu.add_native_item(SystemTrayMenuItem::Separator)
+        .add_item(CustomMenuItem::new("check-updates", "Check for Updates"))
         .add_item(CustomMenuItem::new("exit", "Exit"))
 }
 
@@ -63,6 +64,49 @@ pub fn setup_tray<R: Runtime>(builder: Builder<R>) -> Builder<R> {
                 }
                 "exit" => {
                     app.exit(0);
+                }
+                "check-updates" => {
+                    let app_clone = app.clone();
+                    tauri::async_runtime::spawn(async move {
+                        let window = app_clone.get_window("main");
+                        match app_clone.updater().check().await {
+                            Ok(update) if update.is_update_available() => {
+                                let msg = format!(
+                                    "Version {} is available. Install now?",
+                                    update.latest_version()
+                                );
+                                let should_install = tauri::api::dialog::blocking::ask(
+                                    window.as_ref(),
+                                    "Update Available",
+                                    msg,
+                                );
+                                if should_install {
+                                    match update.download_and_install().await {
+                                        Ok(_) => app_clone.restart(),
+                                        Err(e) => tauri::api::dialog::blocking::message(
+                                            window.as_ref(),
+                                            "Update Error",
+                                            format!("Failed to install update: {}", e),
+                                        ),
+                                    }
+                                }
+                            }
+                            Ok(_) => {
+                                tauri::api::dialog::blocking::message(
+                                    window.as_ref(),
+                                    "Up to Date",
+                                    "You are running the latest version.",
+                                );
+                            }
+                            Err(e) => {
+                                tauri::api::dialog::blocking::message(
+                                    window.as_ref(),
+                                    "Update Check Failed",
+                                    format!("Could not check for updates: {}", e),
+                                );
+                            }
+                        }
+                    });
                 }
                 other if other.starts_with("apply-") => {
                     let uuid_str = other.strip_prefix("apply-").unwrap();

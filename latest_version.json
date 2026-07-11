@@ -1,11 +1,11 @@
 {
-  "version": "0.4.0",
-  "notes": "Multilingual UI with instant language switching. English and Spanish included. Add more by dropping JSON files into AppData locales folder.",
+  "version": "0.5.0",
+  "notes": "Check for Updates added to system tray right-click menu.",
   "pub_date": "2026-07-11T00:00:00Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM0RQWGk3RUZSandlU3c4Rll6azh2R3R5Snkva1ZneFRBcHJ2ZElZMmxXNGNRODdaSThQM0NvZUw5QzJPY1NSZDB5RllTMWh5cjZlVDV1bU1yZDhCOUFzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgzODA2NDc5CWZpbGU6UmVzaXplIFJhYmJpdF8wLjQuMF94NjRfZW4tVVMubXNpLnppcAoxSm1GTERCTGVFQm1Sc3BrUTlqV2VQbkhJcVJwNE44dk5SK29McTVTQ1lMN25RNXBDclQ0VFM2dlFsNUJPTTMwZndQNnorNFp1bFJoeVlXUlpMUnlEZz09Cg==",
-      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v0.4.0/Resize.Rabbit_0.4.0_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM0NwejBhWkVDUmx2Y21hMXpsVzl0Znhoa1lUa1RLYjBsRDZveWhCeVlBK1ZUSittL3hIRXRkZUZsUEE1S01lZkhKQnNoT0t0N0Qra281R282UXdjb2dzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgzODA3MTk2CWZpbGU6UmVzaXplIFJhYmJpdF8wLjUuMF94NjRfZW4tVVMubXNpLnppcAo3VmlidkM1bWJZNlJUT1Y0YnFRSEhEb285aFNnTmx3Z01UTDJ2NW1VOWM1bkhLZnpvWDcyYTFVM3BVMjlxQjExaDgyQlBXbGdHeTRVMXlPeUdOSjNDQT09Cg==",
+      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v0.5.0/Resize.Rabbit_0.5.0_x64_en-US.msi.zip"
     }
   }
 }
