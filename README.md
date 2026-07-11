@@ -1,8 +1,8 @@
 # Why Resize Rabbit
 
-## Are you running dual, triple or more monitors? 
-## Want to play your game across multiple monitors without tools such as Nvidia Surround or Eyefinity? 
-## Does your game/app not support the resolution you need? 
+- Are you running dual, triple or more monitors?
+- Want to play your game across multiple monitors without tools such as Nvidia Surround or Eyefinity?
+- Does your game/app not support the resolution you need? 
 
 Resize Rabbit is a Windows desktop app to save and apply window size and position profiles for your applications. Force most applications to a very specific window size including removal/hiding of the titlebar - can be applied via the app, hotkey or automatically based on the running process.
 
