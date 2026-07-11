@@ -93,7 +93,7 @@ const SettingsMenu = () => {
     };
 
     return (
-        <div className="sidebar bg-base-100 drop-shadow-2xl flex flex-col p-3 pt-16">
+        <div className="sidebar bg-base-100 drop-shadow-2xl flex flex-col p-3 pt-16 overflow-y-auto">
             <div className="form-control w-full">
                 <label className="label pb-1" htmlFor="launch_on_start">
                     <span className="text-2xs uppercase font-semibold">

@@ -1,11 +1,11 @@
 {
-  "version": "0.5.0",
-  "notes": "Check for Updates added to system tray right-click menu.",
+  "version": "0.6.0",
+  "notes": "Tray menu now translated with UI language; attribution restored; Import button layout improved.",
   "pub_date": "2026-07-11T00:00:00Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM0NwejBhWkVDUmx2Y21hMXpsVzl0Znhoa1lUa1RLYjBsRDZveWhCeVlBK1ZUSittL3hIRXRkZUZsUEE1S01lZkhKQnNoT0t0N0Qra281R282UXdjb2dzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgzODA3MTk2CWZpbGU6UmVzaXplIFJhYmJpdF8wLjUuMF94NjRfZW4tVVMubXNpLnppcAo3VmlidkM1bWJZNlJUT1Y0YnFRSEhEb285aFNnTmx3Z01UTDJ2NW1VOWM1bkhLZnpvWDcyYTFVM3BVMjlxQjExaDgyQlBXbGdHeTRVMXlPeUdOSjNDQT09Cg==",
-      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v0.5.0/Resize.Rabbit_0.5.0_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM1BOMDI2eFk1SHVxTEFjSW1ub05kRWluQlh4dm1rM3FWS0VrZjUyYStsTHdnVThiUzZVdmpjQmJJa1h3azl1clJPQWkrZndLdml2Y0U5ZXk2MDU0NFFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzgzODA4MTMwCWZpbGU6UmVzaXplIFJhYmJpdF8wLjYuMF94NjRfZW4tVVMubXNpLnppcApVb0l5NmZrZ2N5YWhraXJWaGx2V3ZsOE1QZFBxenRpd1lWT0U4a3dBdGV4ZHhtZG5xTnRYMWtLaU5ZVzBlbGZqYzQycUFBWVBrQkhPNjVTMjlBdUZEdz09Cg==",
+      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v0.6.0/Resize.Rabbit_0.6.0_x64_en-US.msi.zip"
     }
   }
 }

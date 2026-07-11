@@ -76,8 +76,8 @@
     "beta": "beta"
   },
   "import": {
-    "label": "Import profiles",
-    "button": "Import Resize Raccoon",
+    "label": "Import Resize Raccoon Profiles",
+    "button": "Import",
     "success": "Imported {{count}} profile(s) from Resize Raccoon.",
     "none": "No new profiles found in Resize Raccoon data.",
     "error": "Could not find Resize Raccoon data to import."
@@ -104,6 +104,20 @@
       "title": "Close to tray",
       "description": "Close the program to the system tray instead of exiting."
     }
+  },
+  "tray": {
+    "show": "Show",
+    "apply": "Apply",
+    "checkForUpdates": "Check for Updates",
+    "exit": "Exit",
+    "updateAvailableTitle": "Update Available",
+    "updateAvailableMsg": "Version {{version}} is available. Install now?",
+    "updateErrorTitle": "Update Error",
+    "updateErrorMsg": "Failed to install update: {{error}}",
+    "upToDateTitle": "Up to Date",
+    "upToDateMsg": "You are running the latest version.",
+    "updateCheckFailedTitle": "Update Check Failed",
+    "updateCheckFailedMsg": "Could not check for updates: {{error}}"
   },
   "attribution": "Based on {{name}} by {{author}}",
   "errors": {

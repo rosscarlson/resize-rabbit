@@ -1,6 +1,7 @@
 use std::sync::atomic::Ordering;
 
 use crate::setup::state::AppState;
+use crate::setup::tray;
 use crate::user_settings::{self, UserSettings};
 use tauri::{AppHandle, Manager, Runtime};
 use crate::errors::settings::Error as SettingsError;
@@ -26,7 +27,9 @@ pub fn settings_update<R: Runtime>(
         .poll_rate
         .store(settings.poll_rate, Ordering::SeqCst);
 
-    user_settings::update_user_settings(settings, &app)
+    user_settings::update_user_settings(settings, &app)?;
+    tray::rebuild_tray_menu(&app);
+    Ok(())
 }
 
 #[tauri::command]

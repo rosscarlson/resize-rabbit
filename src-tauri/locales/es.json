@@ -76,8 +76,8 @@
     "beta": "beta"
   },
   "import": {
-    "label": "Importar perfiles",
-    "button": "Importar Resize Raccoon",
+    "label": "Importar perfiles de Resize Raccoon",
+    "button": "Importar",
     "success": "Se importaron {{count}} perfil(es) desde Resize Raccoon.",
     "none": "No se encontraron perfiles nuevos en los datos de Resize Raccoon.",
     "error": "No se pudieron encontrar los datos de Resize Raccoon para importar."
@@ -104,6 +104,20 @@
       "title": "Cerrar a la bandeja",
       "description": "Cierra el programa a la bandeja del sistema en lugar de salir."
     }
+  },
+  "tray": {
+    "show": "Mostrar",
+    "apply": "Aplicar",
+    "checkForUpdates": "Buscar actualizaciones",
+    "exit": "Salir",
+    "updateAvailableTitle": "Actualización disponible",
+    "updateAvailableMsg": "La versión {{version}} está disponible. ¿Instalar ahora?",
+    "updateErrorTitle": "Error de actualización",
+    "updateErrorMsg": "Error al instalar la actualización: {{error}}",
+    "upToDateTitle": "Actualizado",
+    "upToDateMsg": "Está ejecutando la última versión.",
+    "updateCheckFailedTitle": "Error al buscar actualizaciones",
+    "updateCheckFailedMsg": "No se pudo comprobar si hay actualizaciones: {{error}}"
   },
   "attribution": "Basado en {{name}} por {{author}}",
   "errors": {

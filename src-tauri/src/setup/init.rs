@@ -43,9 +43,8 @@ pub fn setup<R: Runtime>(builder: Builder<R>) -> Builder<R> {
         };
         app.manage(app_state);
 
-        // Populate tray menu with loaded profiles
-        let initial_profiles = profiles.lock().unwrap().clone();
-        let _ = app.tray_handle().set_menu(tray::build_tray_menu(&initial_profiles));
+        // Populate tray menu with loaded profiles and current language
+        tray::rebuild_tray_menu(&app_handle);
 
         // Register global shortcuts for profiles that have them
         shortcuts::rebuild_shortcuts(&app_handle);

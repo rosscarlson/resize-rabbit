@@ -76,8 +76,8 @@ const en = {
         "beta": "beta",
     },
     "import": {
-        "label": "Import profiles",
-        "button": "Import Resize Raccoon",
+        "label": "Import Resize Raccoon Profiles",
+        "button": "Import",
         "success": "Imported {{count}} profile(s) from Resize Raccoon.",
         "none": "No new profiles found in Resize Raccoon data.",
         "error": "Could not find Resize Raccoon data to import.",
