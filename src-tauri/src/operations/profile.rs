@@ -130,6 +130,36 @@ pub fn delete_profile<R: Runtime>(
     Ok(())
 }
 
+pub fn import_legacy_profiles<R: Runtime>(app: &AppHandle<R>) -> Result<usize, ProfileError> {
+    let legacy_path = std::env::var("APPDATA")
+        .map(|p| std::path::PathBuf::from(p).join("com.resizeraccoon.dev").join("profiles.json"))
+        .map_err(|_| ProfileError::ProfilePathError)?;
+
+    if !legacy_path.exists() {
+        return Ok(0);
+    }
+
+    let legacy_json = fs::read_to_string(legacy_path)?;
+    let legacy_profiles: Vec<Profile> = serde_json::from_str(&legacy_json)?;
+
+    let mut current = load_profiles(app)?;
+    let existing_uuids: std::collections::HashSet<Uuid> =
+        current.iter().map(|p| p.uuid).collect();
+
+    let new_profiles: Vec<Profile> = legacy_profiles
+        .into_iter()
+        .filter(|p| !existing_uuids.contains(&p.uuid))
+        .collect();
+
+    let count = new_profiles.len();
+    current.extend(new_profiles);
+
+    save_profiles_to_disk(&current, app)?;
+    update_profiles_state(current, app);
+
+    Ok(count)
+}
+
 pub fn reorder_profiles<R: Runtime>(
     uuids: Vec<Uuid>,
     app: &AppHandle<R>,

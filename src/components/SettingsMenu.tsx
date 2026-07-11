@@ -1,8 +1,11 @@
 import { useState } from 'react';
-import { Info } from 'react-feather';
+import { Info, Download } from 'react-feather';
 import { getSettings, updateSettings } from '../state/settingsState';
 import { useTranslation } from '../utils/i18n/useTranslation';
 import backend from '../utils/backend';
+import { refreshProfiles } from '../state/profileState';
+import { addToast } from './toast/ToastSystem';
+import { ToastType } from './toast/toast.types';
 
 const SettingsMenu = () => {
     const t = useTranslation();
@@ -42,6 +45,24 @@ const SettingsMenu = () => {
     const handleCloseToTrayToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
         updateSettings({ closeToTray: e.target.checked });
     }
+
+    const [importing, setImporting] = useState(false);
+    const handleImportLegacy = async () => {
+        setImporting(true);
+        try {
+            const count: number = await backend.profile.importLegacy();
+            if (count > 0) {
+                await refreshProfiles();
+                addToast({ type: ToastType.SUCCESS, message: `Imported ${count} profile(s) from Resize Raccoon.` });
+            } else {
+                addToast({ type: ToastType.INFO, message: 'No new profiles found in Resize Raccoon data.' });
+            }
+        } catch {
+            addToast({ type: ToastType.ERROR, message: 'Could not find Resize Raccoon data to import.' });
+        } finally {
+            setImporting(false);
+        }
+    };
 
     return (
         <div className="sidebar bg-base-100 drop-shadow-2xl flex flex-col p-3 pt-16">
@@ -115,6 +136,25 @@ const SettingsMenu = () => {
                     checked={getSettings().checkForUpdates}
                     onChange={handleCheckForUpdatesToggle}
                 />
+            </div>
+            <div className="divider mt-2 mb-1"></div>
+            <div className="form-control w-full mb-4">
+                <label className="label pb-1">
+                    <span className="text-2xs uppercase font-semibold">
+                        Import profiles
+                    </span>
+                </label>
+                <button
+                    className="btn btn-outline btn-sm gap-2"
+                    onClick={handleImportLegacy}
+                    disabled={importing}
+                >
+                    {importing
+                        ? <span className="loading loading-spinner w-4" />
+                        : <Download size={14} />
+                    }
+                    Import from Resize Raccoon
+                </button>
             </div>
             <div className="divider mt-2 mb-1"></div>
             <div className="form-control w-full mb-4">

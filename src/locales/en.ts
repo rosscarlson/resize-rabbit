@@ -67,6 +67,12 @@ const en = {
         "homepage": "Homepage",
         "processWatcher": "Process watcher",
     },
+    "import": {
+        "button": "Import from Resize Raccoon",
+        "success": "Imported {count} profile(s) from Resize Raccoon.",
+        "none": "No new profiles found in Resize Raccoon data.",
+        "error": "Could not find Resize Raccoon data to import.",
+    },
     "settings": {
         "checkForUpdates": {
             "title": "Check for updates on launch",
@@ -91,7 +97,7 @@ const en = {
         "window_manager": {
             "process_not_found": "Process not found, make sure the application your trying to control is running.",
             "apply_failed": "Failed to apply profile, not sure why. Try again?",
-            "access_deined": "Failed to apply profile, access denied. Try running Resize Raccoon as admin.",
+            "access_deined": "Failed to apply profile, access denied. Try running Resize Rabbit as admin.",
             "invalid_pid": "Failed to apply profile, invalid process id. You'll never see this error. If you do, you win a prize.",
         },
         "profile": {

@@ -48,6 +48,13 @@ pub fn profile_delete<R: Runtime>(
 }
 
 #[tauri::command]
+pub fn profile_import_legacy<R: Runtime>(
+    app_handle: AppHandle<R>,
+) -> Result<usize, ProfileError> {
+    profile::import_legacy_profiles(&app_handle)
+}
+
+#[tauri::command]
 pub fn profile_reorder<R: Runtime>(
     uuids: Vec<Uuid>,
     app_handle: AppHandle<R>,

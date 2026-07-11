@@ -62,12 +62,12 @@ const HomeScreen = () => {
                 <div className="home-screen-grid grid h-screen grid-cols-[45%_55%] w-full bg-gradient-to-t from-[#660e99] to-[#941882]">
                     <div className="logo-col h-full flex flex-col justify-center items-center pb-8 pr-8 pl-8 pt-8">
                         <img
-                            src="./resize-raccoon-logo.png"
+                            src="./resize-rabbit.png"
                             className="w-full max-w-full h-auto object-contain max-h-[50vh]"
                         />
                         <div className="text-container mt-4">
                             <span className="text-element text-4xl font-bold text-slate-200 tracking-wide font-noto">
-                                ResizeRaccoon
+                                Resize Rabbit
                             </span>
                         </div>
                         <div className="only-home flex flex-col">
@@ -81,10 +81,21 @@ const HomeScreen = () => {
                                     <a
                                         className="link"
                                         target="_blank"
-                                        href="https://github.com/mistenkt/resize-raccoon"
+                                        href="https://github.com/rosscarlson/resize-raccoon"
                                     >
                                         Homepage
                                     </a>
+                                </div>
+                                <div className="version-info flex justify-center gap-1 mt-1 opacity-60 normal-case">
+                                    <span>Based on</span>
+                                    <a
+                                        className="link"
+                                        target="_blank"
+                                        href="https://github.com/mistenkt/resize-raccoon"
+                                    >
+                                        Resize Raccoon
+                                    </a>
+                                    <span>by mistenkt</span>
                                 </div>
                             </div>
                             <div className="divider w-20 self-center mt-2 mb-2" />

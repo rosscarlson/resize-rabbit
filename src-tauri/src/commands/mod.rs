@@ -13,6 +13,7 @@ pub fn register_commands<R: Runtime>(builder: Builder<R>) -> Builder<R> {
         profile_commands::profile_update,
         profile_commands::profile_delete,
         profile_commands::profile_reorder,
+        profile_commands::profile_import_legacy,
         process_commands::process_get,
         settings_commands::settings_get,
         settings_commands::settings_update,

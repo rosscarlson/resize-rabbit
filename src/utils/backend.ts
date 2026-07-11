@@ -76,6 +76,8 @@ const profile = {
         }),
     reorder: async (uuids: string[]) =>
         invokeWithToast('profile_reorder', { uuids }),
+    importLegacy: async (): Promise<number> =>
+        invokeWithToast('profile_import_legacy'),
 };
 
 const process = {
