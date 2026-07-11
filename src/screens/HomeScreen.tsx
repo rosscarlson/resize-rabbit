@@ -81,7 +81,7 @@ const HomeScreen = () => {
                                     <a
                                         className="link"
                                         target="_blank"
-                                        href="https://github.com/rosscarlson/resize-raccoon"
+                                        href="https://github.com/rosscarlson/resize-rabbit"
                                     >
                                         Homepage
                                     </a>

@@ -8,7 +8,7 @@ use crate::operations::profile::Profile;
 use crate::operations::window_manager::{self, ApplyConfig};
 
 pub fn listener(profiles: Arc<Mutex<Vec<Profile>>>) {
-    let pipe_name = r"\\.\pipe\resize-raccoon";
+    let pipe_name = r"\\.\pipe\resize-rabbit";
     let command_regex = Regex::new(r#"("[^"]+"|\S+)"#).unwrap(); // Regex for splitting arguments
 
     loop {
