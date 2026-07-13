@@ -1,0 +1,235 @@
+<?if $(sys.BUILDARCH)="x86"?>
+    <?define Win64 = "no" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+<?elseif $(sys.BUILDARCH)="x64"?>
+    <?define Win64 = "yes" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+<?else?>
+    <?error Unsupported value of sys.BUILDARCH=$(sys.BUILDARCH)?>
+<?endif?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product
+            Id="*"
+            Name="Resize Rabbit"
+            UpgradeCode="933d6ae4-6b29-5400-8849-b6b4a76fecc2"
+            Language="!(loc.TauriLanguage)"
+            Manufacturer="jasbone"
+            Version="1.0.1">
+
+        <Package Id="*"
+                 Keywords="Installer"
+                 InstallerVersion="450"
+                 Languages="0"
+                 Compressed="yes"
+                 InstallScope="perMachine"
+                 SummaryCodepage="!(loc.TauriCodepage)"/>
+
+        <!-- https://docs.microsoft.com/en-us/windows/win32/msi/reinstallmode -->
+        <!-- reinstall all files; rewrite all registry entries; reinstall all shortcuts -->
+        <Property Id="REINSTALLMODE" Value="amus" />
+
+        <!-- installer options dialog: desktop shortcut opt-out (default checked, matches
+             prior always-on behavior) and launch-at-startup opt-in (default unchecked,
+             matches the app's own default) -->
+        <Property Id="DESKTOPSHORTCUT" Value="1" />
+        <Property Id="LAUNCHONSTARTUP" Value="0" />
+
+            <MajorUpgrade Schedule="afterInstallInitialize" AllowDowngrades="yes" />
+
+        <InstallExecuteSequence>
+            <RemoveShortcuts>Installed AND NOT UPGRADINGPRODUCTCODE</RemoveShortcuts>
+        </InstallExecuteSequence>
+
+        <Media Id="1" Cabinet="app.cab" EmbedCab="yes" />
+
+
+        <Icon Id="ProductIcon" SourceFile="C:\Users\ross\code\resize-rabbit\src-tauri\target\release\resources\icon.ico"/>
+        <Property Id="ARPPRODUCTICON" Value="ProductIcon" />
+        <Property Id="ARPNOREPAIR" Value="yes" Secure="yes" />      <!-- Remove repair -->
+        <SetProperty Id="ARPNOMODIFY" Value="1" After="InstallValidate" Sequence="execute"/>
+
+        <!-- initialize with previous InstallDir -->
+        <Property Id="INSTALLDIR">
+            <RegistrySearch Id="PrevInstallDirReg" Root="HKCU" Key="Software\jasbone\Resize Rabbit" Name="InstallDir" Type="raw"/>
+        </Property>
+
+        <!-- launch app checkbox -->
+        <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="!(loc.LaunchApp)" />
+        <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1"/>
+        <Property Id="WixShellExecTarget" Value="[!Path]" />
+        <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
+
+        <UI>
+            <!-- launch app checkbox -->
+            <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+
+            <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+
+            <!-- Skip license dialog, route through the install-options dialog instead -->
+            <Publish Dialog="WelcomeDlg"
+                     Control="Next"
+                     Event="NewDialog"
+                     Value="InstallOptionsDlg"
+                     Order="2">1</Publish>
+            <Publish Dialog="InstallDirDlg"
+                     Control="Back"
+                     Event="NewDialog"
+                     Value="InstallOptionsDlg"
+                     Order="2">1</Publish>
+
+            <Dialog Id="InstallOptionsDlg" Width="370" Height="270" Title="!(loc.InstallDirDlgTitle)">
+                <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)">
+                    <Publish Event="NewDialog" Value="WelcomeDlg">1</Publish>
+                </Control>
+                <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+                    <Publish Event="NewDialog" Value="InstallDirDlg">1</Publish>
+                </Control>
+                <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+                    <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+                </Control>
+                <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="!(loc.InstallDirDlgBannerBitmap)" />
+                <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+                <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+                <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="Options" />
+                <Control Id="Description" Type="Text" X="25" Y="23" Width="320" Height="15" Transparent="yes" NoPrefix="yes" Text="Choose a few install options." />
+                <Control Id="DesktopShortcutCheckbox" Type="CheckBox" X="20" Y="65" Width="320" Height="18" Property="DESKTOPSHORTCUT" CheckBoxValue="1" Text="Create a desktop shortcut" />
+                <Control Id="LaunchOnStartupCheckbox" Type="CheckBox" X="20" Y="90" Width="320" Height="18" Property="LAUNCHONSTARTUP" CheckBoxValue="1" Text="Launch Resize Rabbit when Windows starts" />
+            </Dialog>
+        </UI>
+
+        <UIRef Id="WixUI_InstallDir" />
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="DesktopFolder" Name="Desktop">
+                <Component Id="ApplicationShortcutDesktop" Guid="*">
+                    <Condition>DESKTOPSHORTCUT = "1"</Condition>
+                    <Shortcut Id="ApplicationDesktopShortcut" Name="Resize Rabbit" Description="Runs Resize Rabbit" Target="[!Path]" WorkingDirectory="INSTALLDIR" />
+                    <RemoveFolder Id="DesktopFolder" On="uninstall" />
+                    <RegistryValue Root="HKCU" Key="Software\jasbone\Resize Rabbit" Name="Desktop Shortcut" Type="integer" Value="1" KeyPath="yes" />
+                </Component>
+            </Directory>
+            <Directory Id="$(var.PlatformProgramFilesFolder)" Name="PFiles">
+                <Directory Id="INSTALLDIR" Name="Resize Rabbit"/>
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="Resize Rabbit"/>
+            </Directory>
+        </Directory>
+
+        <DirectoryRef Id="INSTALLDIR">
+            <Component Id="RegistryEntries" Guid="*">
+                <RegistryKey Root="HKCU" Key="Software\jasbone\Resize Rabbit">
+                    <RegistryValue Name="InstallDir" Type="string" Value="[INSTALLDIR]" KeyPath="yes" />
+                </RegistryKey>
+            </Component>
+            <!-- Records the installer's "launch at startup" checkbox choice so the app can
+                 apply it (via its normal auto-launch mechanism) on first run, then clear it. -->
+            <Component Id="InstallerLaunchOnStartupMarker" Guid="b6f0a6d4-6e6a-4f0a-9a5d-6a6f0a6d4e6a">
+                <RegistryValue Root="HKCU" Key="Software\jasbone\Resize Rabbit" Name="InstallerLaunchOnStartup" Type="string" Value="[LAUNCHONSTARTUP]" KeyPath="yes" />
+            </Component>
+            <Component Id="Path" Guid="9ac74045-6921-5266-b0bc-95eee7a93de3" Win64="$(var.Win64)">
+                <File Id="Path" Source="C:\Users\ross\code\resize-rabbit\src-tauri\target\release\Resize Rabbit.exe" KeyPath="yes" Checksum="yes"/>
+            </Component>
+            <Directory Id="I1783f4adef0543d0b54d70a3b4185295" Name="_up_"><Directory Id="I306f67c6d99b46aaa379c9a6462d247d" Name="public"><Directory Id="I8cd7ff6b63bc47548c06e56f27e26569" Name="fonts"><Component Id="Iae5a2002b686492d85cdcdaa7124fe0e" Guid="550adc4b-f386-48ad-b7dc-87aa1e9b9b04" Win64="$(var.Win64)" KeyPath="yes"><File Id="PathFile_Iae5a2002b686492d85cdcdaa7124fe0e" Source="C:\Users\ross\code\resize-rabbit\src-tauri\..\public\fonts\noto-sans-javanese-v23-latin-500.woff2" /></Component><Component Id="Ie02806ecc70c40549bf41fdecf0d99ce" Guid="cf0b3c6f-7206-49d8-b49a-45b4a35c2d86" Win64="$(var.Win64)" KeyPath="yes"><File Id="PathFile_Ie02806ecc70c40549bf41fdecf0d99ce" Source="C:\Users\ross\code\resize-rabbit\src-tauri\..\public\fonts\noto-sans-javanese-v23-latin-600.woff2" /></Component><Component Id="I7dcf8042f00349ca8f06cba20d2a9f81" Guid="eefdf15d-940f-4018-8493-d9eee61cf0d5" Win64="$(var.Win64)" KeyPath="yes"><File Id="PathFile_I7dcf8042f00349ca8f06cba20d2a9f81" Source="C:\Users\ross\code\resize-rabbit\src-tauri\..\public\fonts\noto-sans-javanese-v23-latin-700.woff2" /></Component><Component Id="I0427f79354a44f889adf3cf6798a8cd2" Guid="0ce74134-5fac-4372-b536-1f1ad98a31ff" Win64="$(var.Win64)" KeyPath="yes"><File Id="PathFile_I0427f79354a44f889adf3cf6798a8cd2" Source="C:\Users\ross\code\resize-rabbit\src-tauri\..\public\fonts\noto-sans-javanese-v23-latin-regular.woff2" /></Component><Component Id="I6856f8dbac464519adba3c7c41d630c0" Guid="c45a031f-19d4-41c9-a438-29727ca30481" Win64="$(var.Win64)" KeyPath="yes"><File Id="PathFile_I6856f8dbac464519adba3c7c41d630c0" Source="C:\Users\ross\code\resize-rabbit\src-tauri\..\public\fonts\roboto-v30-latin-500.woff2" /></Component><Component Id="Iab4f5339f4f8494b89cc8f4961d76ba0" Guid="fbcb33cb-0a40-4628-be85-0b10e259ec97" Win64="$(var.Win64)" KeyPath="yes"><File Id="PathFile_Iab4f5339f4f8494b89cc8f4961d76ba0" Source="C:\Users\ross\code\resize-rabbit\src-tauri\..\public\fonts\roboto-v30-latin-700.woff2" /></Component><Component Id="I21bc958612de47f0bd3397b8a8a8d452" Guid="6313109a-27ef-42e3-9973-988d3f612e93" Win64="$(var.Win64)" KeyPath="yes"><File Id="PathFile_I21bc958612de47f0bd3397b8a8a8d452" Source="C:\Users\ross\code\resize-rabbit\src-tauri\..\public\fonts\roboto-v30-latin-900.woff2" /></Component><Component Id="I4010df6a4359417aa1659671b46d2ee2" Guid="35e1faf4-78f3-4091-a2d5-0e902320fc99" Win64="$(var.Win64)" KeyPath="yes"><File Id="PathFile_I4010df6a4359417aa1659671b46d2ee2" Source="C:\Users\ross\code\resize-rabbit\src-tauri\..\public\fonts\roboto-v30-latin-regular.woff2" /></Component></Directory></Directory></Directory>
+            <Component Id="CMP_UninstallShortcut" Guid="*">
+
+                <Shortcut Id="UninstallShortcut"
+						  Name="Uninstall Resize Rabbit"
+						  Description="Uninstalls Resize Rabbit"
+						  Target="[System64Folder]msiexec.exe"
+						  Arguments="/x [ProductCode]" />
+
+				<RemoveFolder Id="INSTALLDIR"
+							  On="uninstall" />
+
+				<RegistryValue Root="HKCU"
+							   Key="Software\jasbone\Resize Rabbit"
+							   Name="Uninstaller Shortcut"
+							   Type="integer"
+							   Value="1"
+							   KeyPath="yes" />
+            </Component>
+        </DirectoryRef>
+
+        <DirectoryRef Id="ApplicationProgramsFolder">
+            <Component Id="ApplicationShortcut" Guid="*">
+                <Shortcut Id="ApplicationStartMenuShortcut"
+                    Name="Resize Rabbit"
+                    Description="Runs Resize Rabbit"
+                    Target="[!Path]"
+                    Icon="ProductIcon"
+                    WorkingDirectory="INSTALLDIR">
+                    <ShortcutProperty Key="System.AppUserModel.ID" Value="com.jasbone.resizerabbit"/>
+                </Shortcut>
+                <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+                <RegistryValue Root="HKCU" Key="Software\jasbone\Resize Rabbit" Name="Start Menu Shortcut" Type="integer" Value="1" KeyPath="yes"/>
+           </Component>
+        </DirectoryRef>
+
+<Feature
+                Id="MainProgram"
+                Title="Application"
+                Description="!(loc.InstallAppFeature)"
+                Level="1"
+                ConfigurableDirectory="INSTALLDIR"
+                AllowAdvertise="no"
+                Display="expand"
+                Absent="disallow">
+
+            <ComponentRef Id="RegistryEntries"/>
+            <ComponentRef Id="InstallerLaunchOnStartupMarker"/>
+
+<ComponentRef Id="Iae5a2002b686492d85cdcdaa7124fe0e"/>
+<ComponentRef Id="Ie02806ecc70c40549bf41fdecf0d99ce"/>
+<ComponentRef Id="I7dcf8042f00349ca8f06cba20d2a9f81"/>
+<ComponentRef Id="I0427f79354a44f889adf3cf6798a8cd2"/>
+<ComponentRef Id="I6856f8dbac464519adba3c7c41d630c0"/>
+<ComponentRef Id="Iab4f5339f4f8494b89cc8f4961d76ba0"/>
+<ComponentRef Id="I21bc958612de47f0bd3397b8a8a8d452"/>
+<ComponentRef Id="I4010df6a4359417aa1659671b46d2ee2"/>
+
+            <Feature Id="ShortcutsFeature"
+                Title="Shortcuts"
+                Level="1">
+                <ComponentRef Id="Path"/>
+                <ComponentRef Id="CMP_UninstallShortcut" />
+                <ComponentRef Id="ApplicationShortcut" />
+                <ComponentRef Id="ApplicationShortcutDesktop" />
+            </Feature>
+
+            <Feature
+                Id="Environment"
+                Title="PATH Environment Variable"
+                Description="!(loc.PathEnvVarFeature)"
+                Level="1"
+                Absent="allow">
+            <ComponentRef Id="Path"/>
+</Feature>
+        </Feature>
+
+        <Feature Id="External" AllowAdvertise="no" Absent="disallow">
+</Feature>
+
+        <!-- WebView2 -->
+        <Property Id="WVRTINSTALLED">
+            <RegistrySearch Id="WVRTInstalledSystem" Root="HKLM" Key="SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}" Name="pv" Type="raw" Win64="no" />
+            <RegistrySearch Id="WVRTInstalledUser" Root="HKCU" Key="SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}" Name="pv" Type="raw"/>
+        </Property>
+
+        <CustomAction Id='DownloadAndInvokeBootstrapper' Directory="INSTALLDIR" Execute="deferred" ExeCommand='powershell.exe -NoProfile -windowstyle hidden try [\{] [\[]Net.ServicePointManager[\]]::SecurityProtocol = [\[]Net.SecurityProtocolType[\]]::Tls12 [\}] catch [\{][\}]; Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/p/?LinkId=2124703" -OutFile "$env:TEMP\MicrosoftEdgeWebview2Setup.exe" ; Start-Process -FilePath "$env:TEMP\MicrosoftEdgeWebview2Setup.exe" -ArgumentList (&apos;/silent&apos;, &apos;/install&apos;) -Wait' Return='check'/>
+        <InstallExecuteSequence>
+            <Custom Action='DownloadAndInvokeBootstrapper' Before='InstallFinalize'>
+                <![CDATA[NOT(REMOVE OR WVRTINSTALLED)]]>
+            </Custom>
+        </InstallExecuteSequence>
+
+        <!-- Embedded webview bootstrapper mode -->
+
+        <!-- Embedded offline installer -->
+
+
+
+        <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLDIR]" After="CostFinalize"/>
+    </Product>
+</Wix>

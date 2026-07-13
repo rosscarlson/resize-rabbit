@@ -4,8 +4,10 @@ import { relaunch } from "@tauri-apps/api/process";
 import { ask } from "@tauri-apps/api/dialog";
 import backend from "./utils/backend";
 import i18n from "./utils/i18n/i18n";
+import translate from "./utils/i18n/translate";
 import { setSettings } from "./state/settingsState";
 import { setAppVersion } from "./state/appVersionState";
+import { refreshProfiles } from "./state/profileState";
 import { BootState, setBootState } from "./state/bootState";
 import { batch } from "@preact/signals-react";
 
@@ -18,6 +20,31 @@ async function loadLocale(lang: string): Promise<void> {
         await i18n.changeLanguage(lang);
     } catch {
         // silently fall back to English
+    }
+}
+
+// Runs on every launch (not just first install/run): if there are no Resize
+// Rabbit profiles yet but legacy Resize Raccoon profiles are available, offer
+// to import them - equivalent to clicking Import in Settings.
+async function maybePromptLegacyImport(): Promise<void> {
+    try {
+        const profiles = await backend.profile.all();
+        if (profiles.length > 0) return;
+
+        const legacyAvailable = await backend.profile.legacyAvailable();
+        if (!legacyAvailable) return;
+
+        const shouldImport = await ask(translate('import.promptMessage'), {
+            title: translate('import.promptTitle'),
+            type: 'info',
+        });
+
+        if (shouldImport) {
+            await backend.profile.importLegacy();
+            await refreshProfiles();
+        }
+    } catch {
+        // silently skip the prompt on any failure
     }
 }
 
@@ -34,6 +61,8 @@ async function loadLocale(lang: string): Promise<void> {
         setAppVersion(version);
         setBootState(BootState.READY);
     });
+
+    maybePromptLegacyImport();
 
     if (settings.checkForUpdates) {
         checkUpdate().then(async ({ shouldUpdate, manifest }) => {

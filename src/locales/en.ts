@@ -81,6 +81,8 @@ const en = {
         "success": "Imported {{count}} profile(s) from Resize Raccoon.",
         "none": "No new profiles found in Resize Raccoon data.",
         "error": "Could not find Resize Raccoon data to import.",
+        "promptTitle": "Import Resize Raccoon Profiles?",
+        "promptMessage": "We found existing Resize Raccoon profiles but no Resize Rabbit profiles yet. Import them now?",
     },
     "settings": {
         "language": {

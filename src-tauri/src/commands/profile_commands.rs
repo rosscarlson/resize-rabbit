@@ -59,6 +59,13 @@ pub fn profile_delete<R: Runtime>(
 }
 
 #[tauri::command]
+pub fn profile_legacy_available<R: Runtime>(
+    app_handle: AppHandle<R>,
+) -> Result<bool, ProfileError> {
+    profile::has_importable_legacy_profiles(&app_handle)
+}
+
+#[tauri::command]
 pub fn profile_import_legacy<R: Runtime>(
     app_handle: AppHandle<R>,
 ) -> Result<usize, ProfileError> {

@@ -111,6 +111,8 @@ fn current_lang<R: Runtime>(app: &AppHandle<R>) -> String {
 pub fn build_tray_menu(profiles: &[Profile], strings: &TrayStrings) -> SystemTrayMenu {
     let mut menu = SystemTrayMenu::new()
         .add_item(CustomMenuItem::new("show", &*strings.show))
+        .add_item(CustomMenuItem::new("check-updates", &*strings.check_updates))
+        .add_item(CustomMenuItem::new("exit", &*strings.exit))
         .add_native_item(SystemTrayMenuItem::Separator);
 
     for profile in profiles {
@@ -128,9 +130,7 @@ pub fn build_tray_menu(profiles: &[Profile], strings: &TrayStrings) -> SystemTra
         menu = menu.add_submenu(SystemTraySubmenu::new(&profile.name, submenu_menu));
     }
 
-    menu.add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(CustomMenuItem::new("check-updates", &*strings.check_updates))
-        .add_item(CustomMenuItem::new("exit", &*strings.exit))
+    menu
 }
 
 pub fn rebuild_tray_menu<R: Runtime>(app_handle: &AppHandle<R>) {

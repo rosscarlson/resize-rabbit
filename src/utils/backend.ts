@@ -78,6 +78,8 @@ const profile = {
         invokeWithToast('profile_reorder', { uuids }),
     importLegacy: async (): Promise<number> =>
         invokeWithToast('profile_import_legacy'),
+    legacyAvailable: async (): Promise<boolean> =>
+        invoke('profile_legacy_available'),
 };
 
 const process = {

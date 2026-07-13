@@ -158,3 +158,34 @@ pub fn toggle_launch_on_start<R: Runtime>(
         Ok(is_now_enabled)
     }
 }
+
+/// Reads the "launch at startup" choice the installer's checkbox recorded (if any),
+/// applies it via the normal auto-launch mechanism, then clears the marker so it's
+/// only ever applied once, on first run. No-op if the marker isn't present (e.g. app
+/// wasn't installed via the MSI, or it's already been applied).
+pub fn apply_installer_launch_on_start_choice<R: Runtime>(app_handle: &AppHandle<R>) {
+    use winreg::enums::{HKEY_CURRENT_USER, KEY_READ, KEY_WRITE};
+    use winreg::RegKey;
+
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    let key =
+        match hkcu.open_subkey_with_flags("Software\\jasbone\\Resize Rabbit", KEY_READ | KEY_WRITE)
+        {
+            Ok(key) => key,
+            Err(_) => return,
+        };
+
+    let choice: Result<String, _> = key.get_value("InstallerLaunchOnStartup");
+    if let Ok(value) = choice {
+        let _ = key.delete_value("InstallerLaunchOnStartup");
+
+        if value == "1" {
+            if let Err(e) = toggle_launch_on_start(true, app_handle) {
+                debug_log!(
+                    "Failed to apply installer launch-on-startup choice: {:?}",
+                    e
+                );
+            }
+        }
+    }
+}

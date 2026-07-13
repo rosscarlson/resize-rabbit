@@ -132,6 +132,27 @@ pub fn delete_profile<R: Runtime>(
     Ok(())
 }
 
+pub fn has_importable_legacy_profiles<R: Runtime>(app: &AppHandle<R>) -> Result<bool, ProfileError> {
+    let legacy_path = std::env::var("APPDATA")
+        .map(|p| std::path::PathBuf::from(p).join("com.resizeraccoon.dev").join("profiles.json"))
+        .map_err(|_| ProfileError::ProfilePathError)?;
+
+    if !legacy_path.exists() {
+        return Ok(false);
+    }
+
+    let legacy_json = fs::read_to_string(legacy_path)?;
+    let legacy_profiles: Vec<Profile> = serde_json::from_str(&legacy_json)?;
+
+    let current = load_profiles(app)?;
+    let existing_uuids: std::collections::HashSet<Uuid> =
+        current.iter().map(|p| p.uuid).collect();
+
+    Ok(legacy_profiles
+        .iter()
+        .any(|p| !existing_uuids.contains(&p.uuid)))
+}
+
 pub fn import_legacy_profiles<R: Runtime>(app: &AppHandle<R>) -> Result<usize, ProfileError> {
     let legacy_path = std::env::var("APPDATA")
         .map(|p| std::path::PathBuf::from(p).join("com.resizeraccoon.dev").join("profiles.json"))
