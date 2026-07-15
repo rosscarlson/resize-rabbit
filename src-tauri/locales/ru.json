@@ -8,7 +8,10 @@
     "process": {
       "title": "Процесс",
       "description": "Приложение, для которого вы хотите создать профиль изменения размера. Если вы запустили программу после открытия этого экрана, нажмите кнопку обновления.",
-      "select": "Выберите процесс"
+      "select": "Выберите процесс",
+      "showAll": "Show all processes",
+      "manualEntry": "Enter process name manually…",
+      "manualPlaceholder": "e.g. RRRE64.exe"
     },
     "profileName": {
       "title": "Название профиля",

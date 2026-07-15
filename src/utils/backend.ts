@@ -83,8 +83,8 @@ const profile = {
 };
 
 const process = {
-    running: async () => {
-        const processes: any = await invokeWithToast('process_get');
+    running: async (showAll = false) => {
+        const processes: any = await invokeWithToast('process_get', { showAll });
         return processes.map(caseConvert.toCamel) as Process[];
     },
 };

@@ -1,6 +1,6 @@
 use tauri::{Builder, Manager, PhysicalSize, Runtime, WindowEvent};
 
-use crate::{debug_log, operations::user_settings::{self, UserSettings}};
+use crate::{debug_log, operations::user_settings::{self, UserSettings}, operations::window_state};
 
 pub fn handle_events<R: Runtime>(builder: Builder<R>) -> Builder<R> {
     builder.on_window_event(move |event| match event.event() {
@@ -17,6 +17,9 @@ pub fn handle_events<R: Runtime>(builder: Builder<R>) -> Builder<R> {
         WindowEvent::CloseRequested { api, .. } => {
             let app_handle = event.window().app_handle().clone();
             let window_id = event.window().label().to_string();
+
+            // Remember where the window was so it can reopen on the same monitor
+            window_state::save_window_state(event.window());
 
             // Check if we have setting that says to close to tray
             let user_settings = user_settings::get_user_settings(&app_handle).unwrap_or_else(|e| {

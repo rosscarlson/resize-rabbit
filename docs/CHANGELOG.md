@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.3] - 2026-07-15
+#### Added
+- "Show all processes" checkbox in the process picker, to list every running process instead of just ones with a visible window.
+- Manual process name entry in the process picker, for setting a profile's target process by typing its exe name instead of picking it from the list (useful when the process isn't currently running).
+- The app now remembers which monitor/position it was on when closed, and reopens there next launch (previously always reopened centered on the primary monitor).
+
 ## [1.7.0] - 2024-04-27
 #### Added
 - Close to tray setting. Enabled by default. No longer prompting when closing.

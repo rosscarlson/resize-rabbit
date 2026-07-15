@@ -1,6 +1,6 @@
 interface Process {
     name: string;
-    pid: number;
+    pid?: number;
 }
 
 export default Process;

@@ -8,7 +8,10 @@
     "process": {
       "title": "Processo",
       "description": "L'applicazione per cui vuoi creare un profilo di ridimensionamento. Se hai avviato il programma dopo aver aperto questa schermata, fai clic sul pulsante di aggiornamento.",
-      "select": "Seleziona un processo"
+      "select": "Seleziona un processo",
+      "showAll": "Show all processes",
+      "manualEntry": "Enter process name manually…",
+      "manualPlaceholder": "e.g. RRRE64.exe"
     },
     "profileName": {
       "title": "Nome del profilo",

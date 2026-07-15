@@ -8,7 +8,10 @@
     "process": {
       "title": "Proces",
       "description": "De toepassing waarvoor je een formaatprofiel wilt maken. Als je het programma hebt gestart nadat je dit scherm opende, klik dan op de vernieuwknop.",
-      "select": "Selecteer een proces"
+      "select": "Selecteer een proces",
+      "showAll": "Show all processes",
+      "manualEntry": "Enter process name manually…",
+      "manualPlaceholder": "e.g. RRRE64.exe"
     },
     "profileName": {
       "title": "Profielnaam",

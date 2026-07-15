@@ -9,6 +9,7 @@ use crate::debug_log;
 use crate::operations::{
     process, profile,
     user_settings::{self, UserSettings},
+    window_state,
 };
 use crate::setup::ipc;
 use crate::setup::shortcuts;
@@ -71,9 +72,13 @@ pub fn setup<R: Runtime>(builder: Builder<R>) -> Builder<R> {
             ipc::listener(profiles_clone, ipc_handle);
         }).unwrap();
 
+        let window = app.get_window("main").unwrap();
+
+        // Restore the window to whichever monitor/position it was closed on last time
+        window_state::restore_window_state(&window);
+
         // Check if we should minimize to sys tray
         if user_settings.start_minimized {
-            let window = app.get_window("main").unwrap();
             window.hide().unwrap();
         }
 

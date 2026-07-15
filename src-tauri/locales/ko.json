@@ -8,7 +8,10 @@
     "process": {
       "title": "프로세스",
       "description": "크기 조정 프로필을 만들려는 애플리케이션입니다. 이 화면을 연 후 프로그램을 실행했다면 새로 고침 버튼을 클릭하세요.",
-      "select": "프로세스 선택"
+      "select": "프로세스 선택",
+      "showAll": "Show all processes",
+      "manualEntry": "Enter process name manually…",
+      "manualPlaceholder": "e.g. RRRE64.exe"
     },
     "profileName": {
       "title": "프로필 이름",

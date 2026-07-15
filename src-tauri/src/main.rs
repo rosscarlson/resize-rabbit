@@ -6,6 +6,7 @@ mod operations {
     pub mod profile;
     pub mod user_settings;
     pub mod window_manager;
+    pub mod window_state;
 }
 
 mod setup {

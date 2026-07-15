@@ -48,9 +48,20 @@ extern "system" fn enum_windows_callback(
     1 // Continue enumeration
 }
 
-pub fn get_process_list() -> Vec<ProcessInfo> {
+pub fn get_process_list(show_all: bool) -> Vec<ProcessInfo> {
     let system =
         System::new_with_specifics(RefreshKind::new().with_processes(ProcessRefreshKind::new()));
+
+    if show_all {
+        return system
+            .processes()
+            .values()
+            .map(|process| ProcessInfo {
+                name: process.name().to_string(),
+                pid: process.pid().as_u32() as usize,
+            })
+            .collect();
+    }
 
     let mut process_ids_with_windows: HashSet<usize> = HashSet::new();
     unsafe {
@@ -72,7 +83,7 @@ pub fn get_process_list() -> Vec<ProcessInfo> {
 }
 
 pub fn get_pid_from_profile(profile: &Profile) -> Option<u32> {
-    get_process_list()
+    get_process_list(false)
         .iter()
         .find(|p| p.name.to_lowercase() == profile.process_name.to_lowercase())
         .map(|p| p.pid as u32)

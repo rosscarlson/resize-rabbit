@@ -8,7 +8,10 @@
     "process": {
       "title": "プロセス",
       "description": "リサイズプロファイルを作成したいアプリケーションです。この画面を開いた後にプログラムを起動した場合は、更新ボタンをクリックしてください。",
-      "select": "プロセスを選択"
+      "select": "プロセスを選択",
+      "showAll": "Show all processes",
+      "manualEntry": "Enter process name manually…",
+      "manualPlaceholder": "e.g. RRRE64.exe"
     },
     "profileName": {
       "title": "プロファイル名",

@@ -8,7 +8,10 @@
     "process": {
       "title": "进程",
       "description": "您要为其创建调整大小配置文件的应用程序。如果您在打开此屏幕后启动了程序，请点击刷新按钮。",
-      "select": "选择一个进程"
+      "select": "选择一个进程",
+      "showAll": "Show all processes",
+      "manualEntry": "Enter process name manually…",
+      "manualPlaceholder": "e.g. RRRE64.exe"
     },
     "profileName": {
       "title": "配置文件名称",

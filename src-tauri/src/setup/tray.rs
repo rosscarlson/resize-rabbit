@@ -7,6 +7,7 @@ use uuid::Uuid;
 use crate::operations::profile::Profile;
 use crate::operations::user_settings;
 use crate::operations::window_manager::{self, ApplyConfig};
+use crate::operations::window_state;
 use crate::setup::state::AppState;
 
 const BUNDLED_LOCALES: &[(&str, &str)] = &[
@@ -166,6 +167,9 @@ pub fn setup_tray<R: Runtime>(builder: Builder<R>) -> Builder<R> {
                     window.set_focus().unwrap();
                 }
                 "exit" => {
+                    if let Some(window) = app.get_window("main") {
+                        window_state::save_window_state(&window);
+                    }
                     app.exit(0);
                 }
                 "check-updates" => {

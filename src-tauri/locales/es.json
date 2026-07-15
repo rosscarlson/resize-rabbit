@@ -8,7 +8,10 @@
     "process": {
       "title": "Proceso",
       "description": "La aplicación para la que desea crear un perfil de cambio de tamaño. Si inició el programa después de abrir esta pantalla, haga clic en el botón de actualizar.",
-      "select": "Seleccionar un proceso"
+      "select": "Seleccionar un proceso",
+      "showAll": "Show all processes",
+      "manualEntry": "Enter process name manually…",
+      "manualPlaceholder": "e.g. RRRE64.exe"
     },
     "profileName": {
       "title": "Nombre del perfil",

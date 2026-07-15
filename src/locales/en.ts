@@ -8,7 +8,10 @@ const en = {
         "process": {
             "title": "Process",
             "description": "The application you want to create a resize profile for. If you launched the program after opening this screen you should click the refresh button.",
-            "select": "Select a process"
+            "select": "Select a process",
+            "showAll": "Show all processes",
+            "manualEntry": "Enter process name manually…",
+            "manualPlaceholder": "e.g. RRRE64.exe"
         },
         "profileName": {
             "title": "Profile name",
