@@ -1,11 +1,11 @@
 {
-  "version": "1.0.3",
-  "notes": "Process picker: 'show all processes' checkbox and manual process name entry. The app now remembers which monitor/position it was on when closed and reopens there next launch.",
-  "pub_date": "2026-07-15T19:49:08Z",
+  "version": "1.1.0",
+  "notes": "Fixes Forza Horizon 4 (Microsoft Store version) never resizing correctly. Adds an optional diagnostic Logging setting. Fixes the app window growing larger every restart, and fixes the installer sometimes not updating on reinstall. Renames 'Test profile' to 'Test | Apply'.",
+  "pub_date": "2026-07-17T02:04:08Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM0krdjhmclhmUGRWYzJMTHhzUW5UeHNmSjVBRXpoUjlEb3RkaWdHR2ROMG4ydGRhb0J6QzI0V3pSM3VWNk5adUFPa3Mwd0RITi8vKzZhMW9NaGdZZWdjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg0MTQ0OTA3CWZpbGU6UmVzaXplIFJhYmJpdF8xLjAuM194NjRfZW4tVVMubXNpLnppcAp1eW05OU9TTU5ZNVJNL1hBWnpXWlZZcHZ6aXJqVVo1bUx0blRocmo3Y215cTN2Wk1UcWJ4bHFNTUFzRmNmTXVxOWtUR3ZJRFQ2MXR5QklNR1dGczRDUT09Cg==",
-      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v1.0.3/Resize.Rabbit_1.0.3_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM0VvbTROcHloSFJjS1JaV21vS0FxSlROeGMza0hSNWRaQXY2Y3o5d2VZWjBib2Fyb1dxZHJPUHJJN0krRmUzRW16ei95Qk90REp1ZmdjTDF1UnZrMkFjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg0MjUzNzgyCWZpbGU6UmVzaXplIFJhYmJpdF8xLjEuMF94NjRfZW4tVVMubXNpLnppcApmUmdtYkM1ckNyeVUwYlN5T3NVWkJXSStoWXQ2S0xnWG5CM00wODhjZEFkQlo5QllrZVgzdnRYeUdvdHZrYlc5WUtMenV6OTRTQjhBTUFqUkNqWFNEZz09Cg==",
+      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v1.1.0/Resize.Rabbit_1.1.0_x64_en-US.msi.zip"
     }
   }
 }
