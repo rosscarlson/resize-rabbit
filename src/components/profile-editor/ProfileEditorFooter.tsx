@@ -7,10 +7,11 @@ interface Props {
     onDelete?: () => void;
     onCancel: () => void;
     onSave: () => void;
+    onSaveOnly: (stopLoading: () => void) => void;
     canSave?: boolean;
 }
 
-const ProfileEditorFooter = ({ onTest, canTest, onDelete, onCancel, onSave, canSave = true }: Props) => {
+const ProfileEditorFooter = ({ onTest, canTest, onDelete, onCancel, onSave, onSaveOnly, canSave = true }: Props) => {
     const t = useTranslation();
 
     return (
@@ -44,11 +45,18 @@ const ProfileEditorFooter = ({ onTest, canTest, onDelete, onCancel, onSave, canS
                 </div>
                 <div className="text-right">
                     <LoadingButton
+                        className="btn btn-outline mr-4"
+                        onClick={onSaveOnly}
+                        disabled={!canSave}
+                    >
+                        {t('profile.buttons.save')}
+                    </LoadingButton>
+                    <LoadingButton
                         className="btn"
                         onClick={onSave}
                         disabled={!canSave}
                     >
-                        {t('profile.buttons.save')}
+                        {t('profile.buttons.saveAndClose')}
                     </LoadingButton>
                 </div>
             </div>

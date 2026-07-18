@@ -22,6 +22,14 @@ pub struct Profile {
     pub window_pos_y: i32,
     pub window_pos_x: i32,
     pub remove_borders: bool,
+    /// Only meaningful when `remove_borders` is set. Pushes the window up and
+    /// grows its height by however much leftover title-bar chrome we can
+    /// measure, so the chrome lands off the top edge of the display instead of
+    /// overlapping the game. See `window_manager::effective_target_rect` — it's
+    /// strictly gated to windows we can actually measure (confirmed UWP
+    /// `ApplicationFrameWindow` targets), so this is a no-op for every other
+    /// game even if left on.
+    pub shift_titlebar_offscreen: bool,
     pub shortcut: Option<String>,
 }
 
@@ -38,6 +46,7 @@ impl Default for Profile {
             window_pos_y: 0,
             window_pos_x: 0,
             remove_borders: false,
+            shift_titlebar_offscreen: false,
             shortcut: None,
         }
     }

@@ -47,6 +47,10 @@
       "borderless": {
         "title": "Remove borders",
         "description": "Remove the borders from the window. Only use this if you cannot select borderless in-game."
+      },
+      "titlebarOffscreen": {
+        "title": "Remove titlebar (experimental)",
+        "description": "Pushes the window up and off the top of the screen by the height of its title bar, so the title bar itself ends up hidden above the display. Currently only works for some Store/UWP games (e.g. Forza Horizon 4) that still show a title bar after removing borders — does nothing for other games."
       }
     },
     "autoResize": {
@@ -70,6 +74,7 @@
       "test": "Test | Apply",
       "cancel": "Cancel",
       "save": "Save",
+      "saveAndClose": "Save & Close",
       "delete": "Delete"
     }
   },

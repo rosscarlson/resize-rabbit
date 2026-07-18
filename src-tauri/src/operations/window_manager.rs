@@ -76,15 +76,121 @@ fn validate_window_rect(hwnd: HWND, profile: &Profile) -> bool {
     let actual_width = rect.right - rect.left;
     let actual_height = rect.bottom - rect.top;
 
-    let intended_x = profile.window_pos_x;
-    let intended_y = profile.window_pos_y;
-    let intended_width = profile.window_width;
-    let intended_height = profile.window_height;
+    let (intended_x, intended_y, intended_width, intended_height) =
+        effective_target_rect(hwnd, profile);
 
     actual_x == intended_x
         && actual_y == intended_y
         && actual_width == intended_width
         && actual_height == intended_height
+}
+
+extern "system" fn measure_core_window_top_callback(hwnd: HWND, lparam: LPARAM) -> BOOL {
+    if window_class_name(hwnd) != "Windows.UI.Core.CoreWindow" {
+        return TRUE;
+    }
+
+    let mut rect: RECT = RECT {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+    };
+    unsafe { GetWindowRect(hwnd, &mut rect) };
+
+    let out_ptr = lparam as *mut i32;
+    unsafe { *out_ptr = rect.top };
+
+    FALSE // found it, stop enumerating
+}
+
+/// Measures how far the game's real content (the "Windows.UI.Core.CoreWindow"
+/// child, confirmed via a child-window dump for Forza Horizon 4 — see the
+/// maintainer README's UWP title-bar investigation) sits below the frame's
+/// own top edge. Pure read (`GetWindowRect` only) — never `MoveWindow`/
+/// `SetWindowPos` on the CoreWindow itself, since resizing that child
+/// directly was tried and reverted earlier after it broke the game's
+/// swapchain on a multi-GPU setup.
+///
+/// Deliberately measures the CoreWindow's own offset from the frame's top,
+/// not the "ApplicationFrameTitleBarWindow" strip's height (the first cut of
+/// this code measured the strip and consistently left a 1px sliver visible):
+/// the dump showed the strip itself starting 1px below the frame's top edge
+/// (rect (_, 1, _, 33) inside a frame whose own top was 0) — some sliver of
+/// frame edge/border sits above the strip that isn't part of it. Measuring
+/// from the actual content's position rather than the strip's bounds sidesteps
+/// that gap entirely instead of needing to special-case it.
+///
+/// Returns `None` — never a guessed fallback value — for anything that isn't
+/// a genuine "ApplicationFrameWindow" frame with a CoreWindow child actually
+/// present, so this can only ever affect windows we've confirmed have this
+/// specific shell chrome, not classic games whose border removal already
+/// works cleanly.
+fn measure_uwp_content_top_offset(hwnd: HWND) -> Option<i32> {
+    if window_class_name(hwnd) != "ApplicationFrameWindow" {
+        return None;
+    }
+
+    let mut frame_rect: RECT = RECT {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0,
+    };
+    unsafe { GetWindowRect(hwnd, &mut frame_rect) };
+
+    let mut core_window_top: i32 = i32::MIN;
+    unsafe {
+        EnumChildWindows(
+            hwnd,
+            Some(measure_core_window_top_callback),
+            &mut core_window_top as *mut i32 as LPARAM,
+        );
+    }
+
+    if core_window_top == i32::MIN {
+        return None; // no CoreWindow child found
+    }
+
+    let offset = core_window_top - frame_rect.top;
+
+    if offset > 0 {
+        Some(offset)
+    } else {
+        None
+    }
+}
+
+/// The rect we actually move/validate the window to. Normally just the
+/// profile's raw values. When `shift_titlebar_offscreen` is set *and* we can
+/// measure a real leftover UWP title-bar strip on this exact window, the rect
+/// is shifted up and grown taller by that measured amount instead — the
+/// visible game content (which sits at a fixed offset inside the frame, below
+/// the strip) ends up landing exactly on the profile's intended rect, while
+/// the strip itself lands above the display's top edge. Falls back to the raw
+/// profile rect whenever nothing UWP-specific was measured, so this is a
+/// guaranteed no-op for every other game regardless of the checkbox.
+fn effective_target_rect(hwnd: HWND, profile: &Profile) -> (i32, i32, i32, i32) {
+    let base = (
+        profile.window_pos_x,
+        profile.window_pos_y,
+        profile.window_width,
+        profile.window_height,
+    );
+
+    if !profile.shift_titlebar_offscreen {
+        return base;
+    }
+
+    match measure_uwp_content_top_offset(hwnd) {
+        Some(shift) => (
+            profile.window_pos_x,
+            profile.window_pos_y - shift,
+            profile.window_width,
+            profile.window_height + shift,
+        ),
+        None => base,
+    }
 }
 
 fn remove_window_borders(hwnd: HWND, profile: &Profile) {
@@ -182,13 +288,26 @@ fn move_and_validate_window(
 ) -> Result<(), WindowManagerError> {
     remove_window_borders(hwnd, profile);
 
+    let (target_x, target_y, target_width, target_height) = effective_target_rect(hwnd, profile);
+    if profile.shift_titlebar_offscreen && (target_y, target_height) != (profile.window_pos_y, profile.window_height) {
+        debug_log!(
+            "PID {}: shifting titlebar off-screen — measured {}px, target rect now ({}, {}, {}, {})",
+            pid,
+            target_height - profile.window_height,
+            target_x,
+            target_y,
+            target_width,
+            target_height
+        );
+    }
+
     let moved = unsafe {
         MoveWindow(
             hwnd,
-            profile.window_pos_x,
-            profile.window_pos_y,
-            profile.window_width,
-            profile.window_height,
+            target_x,
+            target_y,
+            target_width,
+            target_height,
             TRUE,
         )
     };

@@ -47,6 +47,10 @@
       "borderless": {
         "title": "Remover bordas",
         "description": "Remove as bordas da janela. Use apenas se você não conseguir selecionar sem bordas dentro do jogo."
+      },
+      "titlebarOffscreen": {
+        "title": "Remover barra de título (experimental)",
+        "description": "Empurra a janela para cima e para fora da tela em uma altura igual à da sua barra de título, fazendo com que a própria barra de título fique oculta acima da tela. Atualmente só funciona para alguns jogos Store/UWP (ex: Forza Horizon 4) que ainda mostram uma barra de título após remover as bordas — não tem efeito em outros jogos."
       }
     },
     "autoResize": {
@@ -70,6 +74,7 @@
       "test": "Testar | Aplicar",
       "cancel": "Cancelar",
       "save": "Salvar",
+      "saveAndClose": "Salvar e fechar",
       "delete": "Excluir"
     }
   },

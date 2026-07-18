@@ -15,7 +15,7 @@
             UpgradeCode="933d6ae4-6b29-5400-8849-b6b4a76fecc2"
             Language="!(loc.TauriLanguage)"
             Manufacturer="jasbone"
-            Version="1.1.0">
+            Version="1.2.0">
 
         <Package Id="*"
                  Keywords="Installer"

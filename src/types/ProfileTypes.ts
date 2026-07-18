@@ -9,5 +9,6 @@ export interface Profile {
     windowPosY: number;
     windowPosX: number;
     removeBorders: boolean;
+    shiftTitlebarOffscreen: boolean;
     shortcut?: string;
 }

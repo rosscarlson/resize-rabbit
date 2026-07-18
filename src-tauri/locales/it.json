@@ -47,6 +47,10 @@
       "borderless": {
         "title": "Rimuovi bordi",
         "description": "Rimuove i bordi della finestra. Usalo solo se non riesci a selezionare la modalità senza bordi nel gioco."
+      },
+      "titlebarOffscreen": {
+        "title": "Rimuovi barra del titolo (sperimentale)",
+        "description": "Sposta la finestra verso l'alto, fuori dallo schermo, di un'altezza pari a quella della sua barra del titolo, così che la barra stessa finisca nascosta sopra il display. Al momento funziona solo per alcuni giochi Store/UWP (es. Forza Horizon 4) che mostrano ancora una barra del titolo dopo la rimozione dei bordi — non ha alcun effetto sugli altri giochi."
       }
     },
     "autoResize": {
@@ -70,6 +74,7 @@
       "test": "Prova | Applica",
       "cancel": "Annulla",
       "save": "Salva",
+      "saveAndClose": "Salva e chiudi",
       "delete": "Elimina"
     }
   },

@@ -41,8 +41,11 @@ const ProfileEditor = ({ profile }: Props) => {
     const [removeBorders, setRemoveBorders] = useState<boolean>(
         profile?.removeBorders || false
     );
+    const [shiftTitlebarOffscreen, setShiftTitlebarOffscreen] =
+        useState<boolean>(profile?.shiftTitlebarOffscreen || false);
     const [delay, setDelay] = useState<string>(String(profile?.delay) || '');
     const [shortcut, setShortcut] = useState<string>(profile?.shortcut || '');
+    const [hasBeenSaved, setHasBeenSaved] = useState<boolean>(!!profile);
     const uuid = useMemo(() => {
         if (profile) {
             return profile.uuid;
@@ -62,6 +65,7 @@ const ProfileEditor = ({ profile }: Props) => {
         delay: Number(delay) || 0,
         auto: autoResize,
         removeBorders,
+        shiftTitlebarOffscreen,
         shortcut: shortcut || undefined,
     });
 
@@ -97,13 +101,23 @@ const ProfileEditor = ({ profile }: Props) => {
         );
     }, [selectedProcess, processName, windowWidth, windowHeight, name]);
 
-    const handleSave = async () => {
+    const persistProfile = async () => {
         const updatedProfile = getUpdatedProfile();
-        const endpoint = profile ? backend.profile.update : backend.profile.add;
+        const endpoint = hasBeenSaved ? backend.profile.update : backend.profile.add;
 
         await endpoint(updatedProfile);
+        setHasBeenSaved(true);
         await refreshProfiles();
+    };
+
+    const handleSaveAndClose = async () => {
+        await persistProfile();
         setScreen(Screen.HOME);
+    };
+
+    const handleSaveOnly = async (stopLoading: () => void) => {
+        await persistProfile();
+        stopLoading();
     };
 
     const handleDelete = () => {
@@ -194,6 +208,52 @@ const ProfileEditor = ({ profile }: Props) => {
                                     value={delay}
                                     onChange={(e) => setDelay(e.target.value)}
                                 />
+                            </FormControl>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 mb-4">
+                            <FormControl
+                                id="remove_borders"
+                                label={t('profile.window.borderless.title')}
+                                description={t(
+                                    'profile.window.borderless.description'
+                                )}
+                                tooltip="top-right"
+                            >
+                                <div className="h-[48px] flex items-center">
+                                    <input
+                                        id="remove_borders"
+                                        type="checkbox"
+                                        className="toggle toggle-accent toggle-lg"
+                                        checked={removeBorders}
+                                        onChange={(e) =>
+                                            setRemoveBorders(e.target.checked)
+                                        }
+                                    />
+                                </div>
+                            </FormControl>
+                            <FormControl
+                                id="shift_titlebar_offscreen"
+                                label={t(
+                                    'profile.window.titlebarOffscreen.title'
+                                )}
+                                description={t(
+                                    'profile.window.titlebarOffscreen.description'
+                                )}
+                                tooltip="top-left"
+                            >
+                                <div className="h-[48px] flex items-center">
+                                    <input
+                                        id="shift_titlebar_offscreen"
+                                        type="checkbox"
+                                        className="toggle toggle-accent toggle-lg"
+                                        checked={shiftTitlebarOffscreen}
+                                        onChange={(e) =>
+                                            setShiftTitlebarOffscreen(
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                </div>
                             </FormControl>
                         </div>
                         <FormControl
@@ -306,24 +366,6 @@ const ProfileEditor = ({ profile }: Props) => {
                                 />
                             </FormControl>
                         </div>
-                        <FormControl
-                            id="remove_borders"
-                            label={t('profile.window.borderless.title')}
-                            description={t(
-                                'profile.window.borderless.description'
-                            )}
-                            tooltip="top-center"
-                        >
-                            <input
-                                id="remove_borders"
-                                type="checkbox"
-                                className="toggle toggle-accent toggle-lg"
-                                checked={removeBorders}
-                                onChange={(e) =>
-                                    setRemoveBorders(e.target.checked)
-                                }
-                            />
-                        </FormControl>
                     </div>
                 </div>
             </div>
@@ -332,7 +374,8 @@ const ProfileEditor = ({ profile }: Props) => {
                 canTest={testEnabled}
                 onDelete={profile ? handleDelete : undefined}
                 onCancel={handleCancel}
-                onSave={handleSave}
+                onSave={handleSaveAndClose}
+                onSaveOnly={handleSaveOnly}
                 canSave={canSave}
             />
         </div>
