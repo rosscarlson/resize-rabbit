@@ -1,11 +1,11 @@
 {
-  "version": "1.2.0",
-  "notes": "Adds an experimental 'Remove titlebar' toggle that hides the leftover title bar on Store/UWP games (e.g. Forza Horizon 4) by pushing it off the top of the screen, independent from 'Remove borders'. Save is now split into 'Save' and 'Save & Close'. Moves border/titlebar options above the shortcut field in the profile editor.",
-  "pub_date": "2026-07-18T22:58:59Z",
+  "version": "1.3.2",
+  "notes": "Profiles can now share the same global shortcut, applied to whichever one's game is actually running. Fixed function-key shortcuts (e.g. Ctrl+Shift+F7) not being capturable. System tray now pins a currently-running game's profile to the top of the menu. Profile editor: delete confirmation, 'Test | Apply' renamed to 'Apply', 'Remove titlebar' no longer experimental, Save split into 'Save' and 'Save & Close', and layout fixes.",
+  "pub_date": "2026-07-23T02:16:12Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM0FSQS9mVWFSZjRJTENTMWtBR3BBM0Z0d2JtNU1DRkJicXZwdzg1SkZZd0hhZlA0cFBGd0ZDVkRqalpGQTR4bXl5a29pbUNBd01MakJxamkxV2ZjQVFBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg0NDE1NTM5CWZpbGU6UmVzaXplIFJhYmJpdF8xLjIuMF94NjRfZW4tVVMubXNpLnppcAowSjBPOWdpQkNBZG4vdlR3SnJzcytIVXdrRXZub2tlVDBqZWhPZzV5Uko5d1VoWEhrVG1Rb0ZpNkNGR1RLT1d0Ni8yd1pzeU43S0w0U1I3S1puRGVDUT09Cg==",
-      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v1.2.0/Resize.Rabbit_1.2.0_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM052WDhVV0VDKzdnMll2eWJ3RGFmWmJhd3dzQmZQRXJPRURlTTBoMS93a0xmblMxNXRkRFpLU21Oc2cranpsdjRrOWFZejBMZFA5MFgxeXF6QVNyNFFvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg0NzcyOTcyCWZpbGU6UmVzaXplIFJhYmJpdF8xLjMuMl94NjRfZW4tVVMubXNpLnppcApGMllPVXB5N0EyOFJRZG94dTVDcUN3NlJLcmkrUWQvb0NudnIrcjM0TEhJQmFtUFJINkxCVUlDdXVQdm5nZDE4TkJOUU1PN3FwSTNtVWM1N0FjQW1EUT09Cg==",
+      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v1.3.2/Resize.Rabbit_1.3.2_x64_en-US.msi.zip"
     }
   }
 }
