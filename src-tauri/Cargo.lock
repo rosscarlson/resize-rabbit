@@ -3025,7 +3025,7 @@ dependencies = [
 
 [[package]]
 name = "resize-rabbit"
-version = "1.2.0"
+version = "1.3.2"
 dependencies = [
  "auto-launch",
  "base64 0.21.5",
@@ -3040,7 +3040,9 @@ dependencies = [
  "tauri",
  "tauri-build",
  "uuid",
+ "webview2-com",
  "winapi",
+ "windows 0.39.0",
  "winreg 0.10.1",
 ]
 

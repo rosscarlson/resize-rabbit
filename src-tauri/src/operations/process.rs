@@ -7,6 +7,7 @@ use crate::debug_log_level;
 use crate::debug_utils::DebugLevel;
 use crate::operations::window_manager::ApplyConfig;
 use crate::profile::Profile;
+use crate::setup::tray;
 use crate::window_manager;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
@@ -18,6 +19,7 @@ use std::time::Duration;
 use sysinfo::ProcessRefreshKind;
 use sysinfo::RefreshKind;
 use sysinfo::{PidExt, ProcessExt, System, SystemExt};
+use tauri::{AppHandle, Runtime};
 use winapi::shared::minwindef::{DWORD, LPARAM};
 use winapi::um::handleapi::CloseHandle;
 use winapi::um::minwinbase::STILL_ACTIVE;
@@ -118,10 +120,11 @@ pub fn get_pids_from_profile(profile: &Profile) -> Vec<u32> {
     matched
 }
 
-pub fn watcher(
+pub fn watcher<R: Runtime>(
     watcher_flag: Arc<AtomicBool>,
     poll_rate_flag: Arc<AtomicU64>,
     profiles: Arc<Mutex<Vec<Profile>>>,
+    app_handle: AppHandle<R>,
 ) {
     debug_log!(
         "Initial watcher_flag state: {}",
@@ -129,6 +132,7 @@ pub fn watcher(
     );
 
     let mut applied_profiles: HashSet<u32> = HashSet::new();
+    let mut running_profile_names: HashSet<String> = HashSet::new();
 
     let process_refresh_kind = ProcessRefreshKind::new();
     let refresh_kind = RefreshKind::new().with_processes(process_refresh_kind);
@@ -136,24 +140,43 @@ pub fn watcher(
     let mut system = System::new_with_specifics(refresh_kind);
 
     loop {
+        // Always refresh the process list, regardless of the watcher_flag
+        // below (which only gates auto-apply-on-launch) — keeping the tray
+        // menu's "currently running" pins fresh is a separate, always-on
+        // convenience and shouldn't depend on that opt-in feature.
+        system.refresh_processes_specifics(process_refresh_kind);
+        let process_list: Vec<_> = system.processes().values().collect();
+
+        let profiles_guard = profiles.lock().unwrap();
+        let all_profiles: Vec<Profile> = profiles_guard.clone();
+        drop(profiles_guard);
+
+        let now_running: HashSet<String> = all_profiles
+            .iter()
+            .map(|p| p.process_name.to_lowercase())
+            .filter(|name| {
+                process_list
+                    .iter()
+                    .any(|proc| proc.name().to_lowercase() == *name)
+            })
+            .collect();
+
+        if now_running != running_profile_names {
+            running_profile_names = now_running;
+            tray::rebuild_tray_menu(&app_handle);
+        }
+
         // Check the flag to see if we should perform the watching logic
         if watcher_flag.load(Ordering::SeqCst) {
-            system.refresh_processes_specifics(process_refresh_kind);
-            let process_list: Vec<_> = system.processes().values().collect();
-
             // Only use profiles that have auto enabled
-            let profiles_guard = profiles.lock().unwrap();
-
             let current_profiles: Vec<Profile> =
-                profiles_guard.iter().filter(|p| p.auto).cloned().collect();
+                all_profiles.iter().filter(|p| p.auto).cloned().collect();
 
             debug_log_level!(
                 DebugLevel::Verbose,
                 "Current profiles: {:?}",
                 current_profiles
             );
-
-            drop(profiles_guard);
 
             for profile in current_profiles.iter() {
                 // find a matching process

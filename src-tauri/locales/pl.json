@@ -49,7 +49,7 @@
         "description": "Usuwa obramowania okna. Używaj tylko wtedy, gdy nie możesz wybrać trybu bez obramowania w grze."
       },
       "titlebarOffscreen": {
-        "title": "Usuń pasek tytułu (eksperymentalne)",
+        "title": "Usuń pasek tytułu",
         "description": "Przesuwa okno w górę i poza ekran o wysokość jego paska tytułu, dzięki czemu sam pasek tytułu zostaje ukryty nad ekranem. Obecnie działa tylko w przypadku niektórych gier Store/UWP (np. Forza Horizon 4), w których pasek tytułu nadal jest widoczny po usunięciu obramowań — nie ma wpływu na inne gry."
       }
     },
@@ -71,11 +71,13 @@
       "clear": "Wyczyść skrót"
     },
     "buttons": {
-      "test": "Testuj | Zastosuj",
+      "test": "Zastosuj",
       "cancel": "Anuluj",
       "save": "Zapisz",
       "saveAndClose": "Zapisz i zamknij",
-      "delete": "Usuń"
+      "delete": "Usuń",
+      "deleteConfirmTitle": "Usuń profil",
+      "deleteConfirmMessage": "Czy na pewno chcesz usunąć „{{name}}”? Tej operacji nie można cofnąć."
     }
   },
   "home": {

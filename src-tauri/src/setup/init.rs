@@ -15,9 +15,16 @@ use crate::setup::ipc;
 use crate::setup::shortcuts;
 use crate::setup::state::AppState;
 use crate::setup::tray;
-use tauri::{Builder, Manager, Runtime};
+use tauri::{Builder, Manager};
+use webview2_com::Microsoft::Web::WebView2::Win32::ICoreWebView2Settings3;
+use windows::core::Interface;
 
-pub fn setup<R: Runtime>(builder: Builder<R>) -> Builder<R> {
+// `with_webview` (used below to disable WebView2's browser accelerator keys)
+// is only implemented for the concrete `Wry` runtime, not the generic
+// `Runtime` bound the sibling setup functions use — this one can't stay
+// generic. Every actual call site passes a `Builder<Wry>` (the default from
+// `tauri::Builder::default()` in `main.rs`), so this isn't a behavior change.
+pub fn setup(builder: Builder<tauri::Wry>) -> Builder<tauri::Wry> {
     builder.setup(move |app| {
         let watcher_flag = Arc::new(AtomicBool::new(false));
         let poll_rate_flag = Arc::new(AtomicU64::new(1000));
@@ -82,9 +89,10 @@ pub fn setup<R: Runtime>(builder: Builder<R>) -> Builder<R> {
         shortcuts::rebuild_shortcuts(&app_handle);
 
         let profiles_clone = profiles.clone();
+        let watcher_app_handle = app_handle.clone();
 
         thread::Builder::new().name("Process watcher".to_string()).spawn(move || {
-            process::watcher(watcher_flag.clone(), poll_rate_flag.clone(), profiles_clone);
+            process::watcher(watcher_flag.clone(), poll_rate_flag.clone(), profiles_clone, watcher_app_handle);
         }).unwrap();
 
         let profiles_clone = profiles.clone();
@@ -95,6 +103,26 @@ pub fn setup<R: Runtime>(builder: Builder<R>) -> Builder<R> {
         }).unwrap();
 
         let window = app.get_window("main").unwrap();
+
+        // WebView2 reserves a set of "browser accelerator keys" (F3 find, F5
+        // refresh, F7 caret browsing, F12 devtools, Ctrl+F, Ctrl+P, etc.) and
+        // intercepts them itself before the page's own keydown handlers ever
+        // see them — this is what silently blocked capturing shortcuts like
+        // Ctrl+Shift+F7 in ShortcutCapture.tsx (F7 toggles caret browsing at
+        // the WebView2 level). None of those browser-chrome actions are
+        // meaningful in this app, so disabling them is safe.
+        let _ = window.with_webview(|webview| unsafe {
+            let Ok(core) = webview.controller().CoreWebView2() else {
+                return;
+            };
+            let Ok(settings) = core.Settings() else {
+                return;
+            };
+            let Ok(settings3) = settings.cast::<ICoreWebView2Settings3>() else {
+                return;
+            };
+            let _ = settings3.SetAreBrowserAcceleratorKeysEnabled(false);
+        });
 
         // Restore the window to whichever monitor/position it was closed on last time
         window_state::restore_window_state(&window);

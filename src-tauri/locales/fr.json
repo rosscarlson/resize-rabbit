@@ -49,7 +49,7 @@
         "description": "Supprime les bordures de la fenêtre. À utiliser uniquement si vous ne pouvez pas sélectionner le mode sans bordure dans le jeu."
       },
       "titlebarOffscreen": {
-        "title": "Supprimer la barre de titre (expérimental)",
+        "title": "Supprimer la barre de titre",
         "description": "Pousse la fenêtre vers le haut, hors de l'écran, sur une hauteur égale à celle de sa barre de titre, afin que la barre de titre elle-même se retrouve cachée au-dessus de l'affichage. Ne fonctionne actuellement que pour certains jeux Store/UWP (par ex. Forza Horizon 4) qui affichent encore une barre de titre après la suppression des bordures — n'a aucun effet sur les autres jeux."
       }
     },
@@ -71,11 +71,13 @@
       "clear": "Effacer le raccourci"
     },
     "buttons": {
-      "test": "Tester | Appliquer",
+      "test": "Appliquer",
       "cancel": "Annuler",
       "save": "Enregistrer",
       "saveAndClose": "Enregistrer et fermer",
-      "delete": "Supprimer"
+      "delete": "Supprimer",
+      "deleteConfirmTitle": "Supprimer le profil",
+      "deleteConfirmMessage": "Voulez-vous vraiment supprimer « {{name}} » ? Cette action est irréversible."
     }
   },
   "home": {

@@ -49,7 +49,7 @@ const en = {
                 "description": "Remove the borders from the window. Only use this if you cannot select borderless in-game.",
             },
             "titlebarOffscreen": {
-                "title": "Remove titlebar (experimental)",
+                "title": "Remove titlebar",
                 "description": "Pushes the window up and off the top of the screen by the height of its title bar, so the title bar itself ends up hidden above the display. Currently only works for some Store/UWP games (e.g. Forza Horizon 4) that still show a title bar after removing borders — does nothing for other games.",
             }
         },
@@ -65,17 +65,20 @@ const en = {
         },
         "shortcut": {
             "title": "Shortcut Key",
-            "description": "Global hotkey to apply this profile even when the app is minimized. Must include at least one modifier (Ctrl, Alt, Shift).",
+            "description": "Global hotkey to apply this profile even when the app is minimized. Must include at least one modifier (Ctrl, Alt, Shift). The same shortcut can be reused across multiple profiles — when pressed, it's applied to whichever of those profiles' games is actually running.",
             "placeholder": "Click to set shortcut",
             "listening": "Press a key combo... (Esc to cancel)",
             "clear": "Clear shortcut",
+            "sharedWith": "Also used by: {{names}} — pressing this shortcut applies to whichever of these is actually running.",
         },
         "buttons": {
-            "test": "Test | Apply",
+            "test": "Apply",
             "cancel": "Cancel",
             "save": "Save",
             "saveAndClose": "Save & Close",
             "delete": "Delete",
+            "deleteConfirmTitle": "Delete Profile",
+            "deleteConfirmMessage": "Are you sure you want to delete \"{{name}}\"? This cannot be undone.",
         },
     },
     "home": {

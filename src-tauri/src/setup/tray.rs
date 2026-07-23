@@ -1,9 +1,12 @@
+use std::collections::HashSet;
+
 use tauri::{
     AppHandle, Builder, CustomMenuItem, Manager, Runtime, SystemTray, SystemTrayEvent,
     SystemTrayMenu, SystemTrayMenuItem, SystemTraySubmenu,
 };
 use uuid::Uuid;
 
+use crate::operations::process;
 use crate::operations::profile::Profile;
 use crate::operations::user_settings;
 use crate::operations::window_manager::{self, ApplyConfig};
@@ -109,26 +112,50 @@ fn current_lang<R: Runtime>(app: &AppHandle<R>) -> String {
         .unwrap_or_else(|_| "en".to_string())
 }
 
-pub fn build_tray_menu(profiles: &[Profile], strings: &TrayStrings) -> SystemTrayMenu {
-    let mut menu = SystemTrayMenu::new()
+fn profile_submenu(profile: &Profile, strings: &TrayStrings) -> SystemTraySubmenu {
+    let mut submenu_menu = SystemTrayMenu::new()
+        .add_item(CustomMenuItem::new(format!("apply-{}", profile.uuid), &*strings.apply));
+
+    if let Some(s) = &profile.shortcut {
+        if !s.is_empty() {
+            submenu_menu = submenu_menu.add_item(
+                CustomMenuItem::new(format!("shortcut-{}", profile.uuid), s).disabled(),
+            );
+        }
+    }
+
+    SystemTraySubmenu::new(&profile.name, submenu_menu)
+}
+
+/// `running_uuids` are profiles whose process is currently running — these get
+/// a duplicate submenu pinned at the very top of the menu (same id strings as
+/// their normal entry further down, so clicking either does the same thing)
+/// so a running game's profile is easy to find without hunting through the
+/// full list. The profile's normal entry further down the menu is left
+/// completely untouched — this only ever adds a copy, never moves anything.
+pub fn build_tray_menu(profiles: &[Profile], running_uuids: &HashSet<Uuid>, strings: &TrayStrings) -> SystemTrayMenu {
+    let mut menu = SystemTrayMenu::new();
+
+    let running_profiles: Vec<&Profile> = profiles
+        .iter()
+        .filter(|p| running_uuids.contains(&p.uuid))
+        .collect();
+
+    if !running_profiles.is_empty() {
+        for profile in &running_profiles {
+            menu = menu.add_submenu(profile_submenu(profile, strings));
+        }
+        menu = menu.add_native_item(SystemTrayMenuItem::Separator);
+    }
+
+    menu = menu
         .add_item(CustomMenuItem::new("show", &*strings.show))
         .add_item(CustomMenuItem::new("check-updates", &*strings.check_updates))
         .add_item(CustomMenuItem::new("exit", &*strings.exit))
         .add_native_item(SystemTrayMenuItem::Separator);
 
     for profile in profiles {
-        let mut submenu_menu = SystemTrayMenu::new()
-            .add_item(CustomMenuItem::new(format!("apply-{}", profile.uuid), &*strings.apply));
-
-        if let Some(s) = &profile.shortcut {
-            if !s.is_empty() {
-                submenu_menu = submenu_menu.add_item(
-                    CustomMenuItem::new(format!("shortcut-{}", profile.uuid), s).disabled(),
-                );
-            }
-        }
-
-        menu = menu.add_submenu(SystemTraySubmenu::new(&profile.name, submenu_menu));
+        menu = menu.add_submenu(profile_submenu(profile, strings));
     }
 
     menu
@@ -138,13 +165,22 @@ pub fn rebuild_tray_menu<R: Runtime>(app_handle: &AppHandle<R>) {
     let state = app_handle.state::<AppState>();
     let profiles = state.profiles.lock().unwrap().clone();
     drop(state);
+
+    let running_uuids: HashSet<Uuid> = profiles
+        .iter()
+        .filter(|p| !process::get_pids_from_profile(p).is_empty())
+        .map(|p| p.uuid)
+        .collect();
+
     let lang = current_lang(app_handle);
     let strings = tray_strings_for_lang(&lang, app_handle);
-    let _ = app_handle.tray_handle().set_menu(build_tray_menu(&profiles, &strings));
+    let _ = app_handle
+        .tray_handle()
+        .set_menu(build_tray_menu(&profiles, &running_uuids, &strings));
 }
 
 pub fn setup_tray<R: Runtime>(builder: Builder<R>) -> Builder<R> {
-    let system_tray = SystemTray::new().with_menu(build_tray_menu(&[], &TrayStrings::default()));
+    let system_tray = SystemTray::new().with_menu(build_tray_menu(&[], &HashSet::new(), &TrayStrings::default()));
 
     builder
         .system_tray(system_tray)

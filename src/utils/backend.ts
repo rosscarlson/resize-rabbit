@@ -107,11 +107,17 @@ const locale = {
     load: (lang: string): Promise<string> => invoke('locale_load', { lang }),
 };
 
+const shortcuts = {
+    suspend: (): Promise<void> => invoke('shortcuts_suspend'),
+    resume: (): Promise<void> => invoke('shortcuts_resume'),
+};
+
 const backend = {
     profile,
     process,
     settings,
     locale,
+    shortcuts,
 };
 
 export default backend;

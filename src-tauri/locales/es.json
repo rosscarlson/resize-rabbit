@@ -49,7 +49,7 @@
         "description": "Elimina los bordes de la ventana. Úselo solo si no puede seleccionar sin bordes dentro del juego."
       },
       "titlebarOffscreen": {
-        "title": "Quitar barra de título (experimental)",
+        "title": "Quitar barra de título",
         "description": "Empuja la ventana hacia arriba y fuera de la pantalla una altura igual a la de su barra de título, de modo que la propia barra de título quede oculta por encima de la pantalla. Actualmente solo funciona con algunos juegos de Store/UWP (p. ej. Forza Horizon 4) que aún muestran una barra de título tras quitar los bordes — no tiene efecto en otros juegos."
       }
     },
@@ -71,11 +71,13 @@
       "clear": "Borrar atajo"
     },
     "buttons": {
-      "test": "Probar | Aplicar",
+      "test": "Aplicar",
       "cancel": "Cancelar",
       "save": "Guardar",
       "saveAndClose": "Guardar y cerrar",
-      "delete": "Eliminar"
+      "delete": "Eliminar",
+      "deleteConfirmTitle": "Eliminar perfil",
+      "deleteConfirmMessage": "¿Seguro que quieres eliminar \"{{name}}\"? Esta acción no se puede deshacer."
     }
   },
   "home": {

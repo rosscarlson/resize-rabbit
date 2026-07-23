@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { X } from 'react-feather';
 import { useTranslation } from '../../utils/i18n/useTranslation';
+import backend from '../../utils/backend';
 
 interface Props {
     value: string;
@@ -46,6 +47,22 @@ function buildShortcut(e: KeyboardEvent): string | null {
 const ShortcutCapture = ({ value, onChange }: Props) => {
     const t = useTranslation();
     const [listening, setListening] = useState(false);
+
+    useEffect(() => {
+        if (!listening) return;
+
+        // A combo already bound to another profile is registered as a
+        // system-wide hotkey — Windows delivers it as WM_HOTKEY instead of a
+        // normal keystroke, so the page's own keydown listener below would
+        // never see it at all while it's still registered. Suspend every
+        // global shortcut for the duration of capture so any combo can be
+        // read, then restore them (from whatever's actually saved) as soon
+        // as capture ends, however it ends.
+        backend.shortcuts.suspend();
+        return () => {
+            backend.shortcuts.resume();
+        };
+    }, [listening]);
 
     useEffect(() => {
         if (!listening) return;

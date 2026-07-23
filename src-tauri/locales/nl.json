@@ -49,7 +49,7 @@
         "description": "Verwijdert de randen van het venster. Gebruik dit alleen als je in de game geen randloze modus kunt selecteren."
       },
       "titlebarOffscreen": {
-        "title": "Titelbalk verwijderen (experimenteel)",
+        "title": "Titelbalk verwijderen",
         "description": "Duwt het venster omhoog en van het scherm af met een hoogte gelijk aan die van de titelbalk, zodat de titelbalk zelf verborgen eindigt boven het beeldscherm. Werkt momenteel alleen voor sommige Store/UWP-games (bijv. Forza Horizon 4) die na het verwijderen van de randen nog steeds een titelbalk tonen — heeft geen effect op andere games."
       }
     },
@@ -71,11 +71,13 @@
       "clear": "Sneltoets wissen"
     },
     "buttons": {
-      "test": "Testen | Toepassen",
+      "test": "Toepassen",
       "cancel": "Annuleren",
       "save": "Opslaan",
       "saveAndClose": "Opslaan en sluiten",
-      "delete": "Verwijderen"
+      "delete": "Verwijderen",
+      "deleteConfirmTitle": "Profiel verwijderen",
+      "deleteConfirmMessage": "Weet je zeker dat je \"{{name}}\" wilt verwijderen? Dit kan niet ongedaan worden gemaakt."
     }
   },
   "home": {

@@ -49,7 +49,7 @@
         "description": "Entfernt die Rahmen des Fensters. Nur verwenden, wenn Sie den Vollbild-ohne-Rahmen-Modus im Spiel nicht auswählen können."
       },
       "titlebarOffscreen": {
-        "title": "Titelleiste entfernen (experimentell)",
+        "title": "Titelleiste entfernen",
         "description": "Schiebt das Fenster um die Höhe seiner Titelleiste nach oben und aus dem Bildschirm heraus, sodass die Titelleiste selbst oberhalb des Displays verborgen bleibt. Funktioniert derzeit nur bei einigen Store/UWP-Spielen (z. B. Forza Horizon 4), bei denen nach dem Entfernen der Rahmen weiterhin eine Titelleiste sichtbar ist — hat bei anderen Spielen keine Wirkung."
       }
     },
@@ -71,11 +71,13 @@
       "clear": "Tastenkombination löschen"
     },
     "buttons": {
-      "test": "Testen | Anwenden",
+      "test": "Anwenden",
       "cancel": "Abbrechen",
       "save": "Speichern",
       "saveAndClose": "Speichern & schließen",
-      "delete": "Löschen"
+      "delete": "Löschen",
+      "deleteConfirmTitle": "Profil löschen",
+      "deleteConfirmMessage": "Möchten Sie „{{name}}“ wirklich löschen? Dies kann nicht rückgängig gemacht werden."
     }
   },
   "home": {
