@@ -7,68 +7,69 @@
   "profile": {
     "process": {
       "title": "进程",
-      "description": "您要为其创建调整大小配置文件的应用程序。如果您在打开此屏幕后启动了程序，请点击刷新按钮。",
-      "select": "选择一个进程",
-      "showAll": "Show all processes",
-      "manualEntry": "Enter process name manually…",
-      "manualPlaceholder": "e.g. RRRE64.exe"
+      "description": "选择要创建配置的应用程序。如果您在启动程序前先打开了此界面，请点击刷新按钮。",
+      "select": "选择进程",
+      "showAll": "显示所有进程",
+      "manualEntry": "手动输入进程名称…",
+      "manualPlaceholder": "例如：RRRE64.exe"
     },
     "profileName": {
-      "title": "配置文件名称",
-      "description": "您要创建的配置文件的名称，将用于在配置文件列表中标识该预设。"
+      "title": "配置名称",
+      "description": "为此配置命名，该名称将用于在配置列表中识别此预设。"
     },
     "preset": {
       "title": "预设",
-      "description": "适用于某些三屏显示器设置的预先计算值。",
-      "select": "从预设复制数值",
+      "description": "适用于部分三屏显示器方案的预设值。",
+      "select": "选择预设",
       "options": {
         "triple1080p": "三屏 1080p",
         "triple1440p": "三屏 1440p",
-        "triple4k": "三屏 4k"
+        "triple4k": "三屏 4K"
       }
     },
     "window": {
       "width": {
         "title": "窗口宽度",
-        "description": "应该很好理解，即窗口的预期宽度。对于三屏显示器设置，这是单个屏幕水平像素的 3 倍。"
+        "description": "窗口的目标宽度。对于三屏设置，该值为单个屏幕水平像素的 3 倍。"
       },
       "height": {
         "title": "窗口高度",
-        "description": "应该很好理解，即窗口的预期高度。对于三屏显示器设置，这是单个屏幕的高度。"
+        "description": "窗口的目标高度。对于三屏设置，该值等于单个屏幕的高度。"
       },
       "posY": {
         "title": "窗口 Y 坐标",
-        "description": "窗口在屏幕上的垂直位置，通常为 0。"
+        "description": "窗口在屏幕上的垂直位置，通常设为 0。"
       },
       "posX": {
         "title": "窗口 X 坐标",
-        "description": "窗口在屏幕上的水平位置，取决于您的设置。对于三屏显示器，通常是一个负值，等于单个屏幕的宽度。"
+        "description": "窗口在屏幕上的水平位置，取决于您的显示器布局。对于三屏设置，通常为负值，其绝对值等于单个屏幕的宽度。"
       },
       "borderless": {
-        "title": "移除边框",
-        "description": "移除窗口边框。仅当您无法在游戏内选择无边框模式时才使用此选项。"
+        "title": "去除边框",
+        "description": "移除窗口边框。仅当游戏内无法选择无边框模式时才使用此选项。"
       },
       "titlebarOffscreen": {
-        "title": "移除标题栏",
-        "description": "将窗口向上推出屏幕，推出的高度等于其标题栏的高度，从而使标题栏本身隐藏在显示屏上方。目前仅对部分移除边框后仍显示标题栏的 Store/UWP 游戏（例如极限竞速：地平线4）有效——对其他游戏没有任何影响。"
+        "title": "隐藏标题栏",
+        "description": "将窗口向上偏移一个标题栏的高度，使标题栏移出屏幕顶部从而被隐藏。目前仅对部分在去除边框后仍显示标题栏的商店/UWP 游戏（如《极限竞速：地平线4》）有效，对其他游戏无任何效果。"
       }
     },
     "autoResize": {
-      "title": "自动调整大小",
-      "description": "允许在程序启动时自动应用此配置文件（需要全局进程监视）。",
+      "title": "自动调整",
+      "description": "在程序启动时自动应用此配置（需启用全局进程监视）。",
       "enabled": "自动",
       "disabled": "手动"
     },
     "autoResizeDelay": {
-      "title": "自动调整大小延迟（毫秒）",
-      "description": "程序启动与应用配置文件之间的延迟时间（以毫秒为单位）。"
+      "title": "自动调整延迟（毫秒）",
+      "description": "程序启动后延迟多长时间再应用此配置（单位：毫秒）。"
     },
     "shortcut": {
       "title": "快捷键",
-      "description": "即使应用程序已最小化，也可用于应用此配置文件的全局快捷键。必须至少包含一个修饰键（Ctrl、Alt、Shift）。",
+      "description": "用于应用此配置的全局快捷键，即使应用处于最小化状态也可使用。必须包含至少一个修饰键（Ctrl、Alt、Shift）。",
       "placeholder": "点击设置快捷键",
-      "listening": "请按下组合键...（按 Esc 取消）",
-      "clear": "清除快捷键"
+      "listening": "请按下组合键…（按 Esc 取消）",
+      "clear": "清除快捷键",
+      "sharedWith": "同时被以下配置使用：{{names}}——按下此快捷键将对游戏正在运行的那个配置生效。"
     },
     "buttons": {
       "test": "应用",
@@ -76,8 +77,8 @@
       "save": "保存",
       "saveAndClose": "保存并关闭",
       "delete": "删除",
-      "deleteConfirmTitle": "删除配置文件",
-      "deleteConfirmMessage": "确定要删除\"{{name}}\"吗?此操作无法撤销。"
+      "deleteConfirmTitle": "删除配置",
+      "deleteConfirmMessage": "确定要删除“{{name}}”吗？此操作无法撤销。"
     }
   },
   "home": {
@@ -86,11 +87,11 @@
     "beta": "测试版"
   },
   "import": {
-    "label": "导入 Resize Raccoon 配置文件",
+    "label": "导入 Resize Raccoon 配置",
     "button": "导入",
-    "success": "已从 Resize Raccoon 导入 {{count}} 个配置文件。",
-    "none": "在 Resize Raccoon 数据中未找到新的配置文件。",
-    "error": "找不到要导入的 Resize Raccoon 数据。"
+    "success": "已从 Resize Raccoon 导入 {{count}} 个配置。",
+    "none": "未在 Resize Raccoon 数据中发现新的配置。",
+    "error": "找不到可导入的 Resize Raccoon 数据。"
   },
   "settings": {
     "language": {
@@ -100,23 +101,23 @@
       "title": "启动时检查更新"
     },
     "processPollRate": {
-      "title": "进程轮询频率（毫秒）",
-      "description": "检查新启动应用程序的频率。"
+      "title": "进程轮询间隔（毫秒）",
+      "description": "检测新启动应用程序的频率。"
     },
     "launchOnStart": {
       "title": "开机启动"
     },
     "startMinimized": {
       "title": "启动时最小化",
-      "description": "启动程序时将其最小化到系统托盘。"
+      "description": "程序启动后最小化到系统托盘。"
     },
     "closeToTray": {
       "title": "关闭到托盘",
-      "description": "关闭程序时将其最小化到系统托盘，而不是退出。"
+      "description": "关闭程序时将其最小化到系统托盘，而不是直接退出。"
     },
     "loggingEnabled": {
       "title": "日志记录",
-      "description": "将诊断日志写入应用程序旁边的 'logs' 文件夹。用于排查问题；完成后请关闭。"
+      "description": "将诊断日志写入应用程序所在目录下的“logs”文件夹中。排查问题很有用，问题解决了别忘了关闭哦~"
     }
   },
   "tray": {
@@ -125,8 +126,8 @@
     "checkForUpdates": "检查更新",
     "exit": "退出",
     "updateAvailableTitle": "有可用更新",
-    "updateAvailableMsg": "版本 {{version}} 可用。是否立即安装？",
-    "updateErrorTitle": "更新错误",
+    "updateAvailableMsg": "新版本 {{version}} 已发布，是否立即安装？",
+    "updateErrorTitle": "更新出错",
     "updateErrorMsg": "安装更新失败：{{error}}",
     "upToDateTitle": "已是最新版本",
     "upToDateMsg": "您正在使用最新版本。",
@@ -136,20 +137,20 @@
   "attribution": "基于 {{author}} 的 {{name}}",
   "errors": {
     "window_manager": {
-      "process_not_found": "未找到进程，请确保您要控制的应用程序正在运行。",
-      "apply_failed": "应用配置文件失败，原因不明。是否重试？",
-      "access_deined": "应用配置文件失败，访问被拒绝。请尝试以管理员身份运行 Resize Rabbit。",
-      "invalid_pid": "应用配置文件失败，进程 ID 无效。您永远不会看到此错误。如果看到了，那您中奖了。"
+      "process_not_found": "未找到进程，请确认要调整的应用程序正在运行。",
+      "apply_failed": "应用配置失败，原因未知。是否重试？",
+      "access_deined": "应用配置失败，访问被拒绝。请尝试以管理员身份运行 Resize Rabbit。",
+      "invalid_pid": "应用配置失败，进程 ID 无效。理论上您不会看到此错误，如果看到了，恭喜您中奖了。"
     },
     "profile": {
-      "not_found": "未找到配置文件，请重启程序以同步配置文件。",
-      "profile_path_error": "无法定位配置文件路径，这不太妙，但不应该发生。总之请不要删除应用程序数据文件夹。"
+      "not_found": "未找到配置，请重启程序以同步配置。",
+      "profile_path_error": "无法定位配置路径，这很不对，理论上不应该发生。总之请不要删除应用数据文件夹。"
     },
     "settings": {
       "launch_on_start_error": "无法切换开机启动设置",
-      "unable_to_fetch_app_data": "无法获取应用程序元数据",
+      "unable_to_fetch_app_data": "无法获取应用元数据",
       "settings_path_error": "找不到 settings.json 文件"
     },
-    "unknown": "发生意外错误"
+    "unknown": "发生未知错误"
   }
 }
