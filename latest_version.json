@@ -1,11 +1,11 @@
 {
-  "version": "1.5.0",
-  "notes": "New: Profile Groups — organize profiles into collapsible groups, drag to reorder, drag a profile into a group, and give a group its own hotkey that applies to every running member at once (tray menu mirrors this layout too). Fixed window targeting for apps with multiple windows (e.g. SimHub) by picking the largest window instead of an arbitrary one. Removed the duplicate 'running processes' section from the top of the tray menu. Also: shared hotkeys now apply to all matching running profiles, not just the first; fixed a crash testing/saving a profile with blank fields; window width/height are now optional; delete a profile from the home screen with confirmation; logging folder/'Open logs folder' fixes.",
-  "pub_date": "2026-07-28T23:05:13Z",
+  "version": "1.5.1",
+  "notes": "Improved Simplified Chinese translation, contributed by @gongfuture - thank you! Natural native-speaker wording throughout, plus translations for strings that were previously still in English.",
+  "pub_date": "2026-10-27T12:55:16Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM09DMlhPaFVTMnY4RkIwMk9KbXJ4Smk4NVhPbkJXVWRaYzl5S1dEcHd2blFrY3pxa2traktWZjNIU0JXM1J5T2V1eWY2d1E2SmNxZmpZMFhXMWFudHdjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg1Mjc5ODYwCWZpbGU6UmVzaXplIFJhYmJpdF8xLjUuMF94NjRfZW4tVVMubXNpLnppcApZOUJVbzNkRnRVK1lBaThkSC9Bc3d2ejROTkVrT1dYZ3QvOUllNmZvVTgrd0NqeDdWdDFzQU16SlRJSzRTMWZpZjZlOFlOUVhhcjFQc3RGL1dOQUZDUT09Cg==",
-      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v1.5.0/Resize.Rabbit_1.5.0_x64_en-US.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRaTA2bWpwbWlqM0VPYmdOZUNDdDMwZGpaa2xxSklqZ0dMaEFMMDBkaDJSblJSLytDcS9SM2xuWDdyUWZzTkUrWlo0QzNGR3E5eEl0aHhCcXBZMjJOQ05ESTRsUWYrdnd3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzkzMTA1Njg5CWZpbGU6UmVzaXplIFJhYmJpdF8xLjUuMV94NjRfZW4tVVMubXNpLnppcApCY3lGdGRRTndoV1l0VDNkVzlGOEpzSEhzTTZXTEpDS095MGZCcGNYRFprQk0xMC9yQU5nZUJzNURRY284SkVQYnVpVzF0WE9NWjhDcEdETkFTVmRDZz09Cg==",
+      "url": "https://github.com/rosscarlson/resize-rabbit/releases/download/v1.5.1/Resize.Rabbit_1.5.1_x64_en-US.msi.zip"
     }
   }
 }
